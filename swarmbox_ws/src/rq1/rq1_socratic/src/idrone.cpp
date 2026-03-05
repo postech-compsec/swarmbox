@@ -76,8 +76,17 @@ bool IDrone::exec_complete() {
 
 int main(int argc, char *argv[]) {
     rclcpp::init(argc, argv);
-    auto idrone_node = std::make_shared<IDrone>(rclcpp::NodeOptions());
-    rclcpp::spin(idrone_node);
+
+    rclcpp::NodeOptions options;
+    auto idrone_node = std::make_shared<IDrone>(options);
+
+    rclcpp::executors::MultiThreadedExecutor executor;
+
+    executor.add_node(idrone_node);
+    executor.add_node(idrone_node->get_px4_node());
+
+    executor.spin();
+
     rclcpp::shutdown();
     return 0;
 }
