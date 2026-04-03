@@ -1,0 +1,4 @@
+.venv/
+swarmbox_ws/build/
+swarmbox_ws/install/
+swarmbox_ws/log/

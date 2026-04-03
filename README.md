@@ -27,19 +27,13 @@ This repository contains the source code and artifact for the following paper ac
 at the **ACM International Conference on the Foundations of Software Engineering (FSE 2026)**.
 
 > **SwarmBox: A Plug-and-Play Drone Swarm Framework for Streamlined Development and Comprehensive Analysis** 
-> Minki Lee, Seojin Lee, and Seulbae Kim
+>
+> Minki Lee, Seojin Lee, and Seulbae Kim (To Appear)
 
 If you use SwarmBox in your research, please cite our paper:
 
 ```bibtex
-@inproceedings{lee2026swarmbox,
-  author    = {Lee, Minki and Lee, Seojin and Kim, Seulbae},
-  title     = {{SwarmBox}: A Plug-and-Play Drone Swarm Framework for Streamlined Development and Comprehensive Analysis},
-  booktitle = {Proceedings of the ACM International Conference on the Foundations of Software Engineering (FSE)},
-  year      = {2026},
-  publisher = {Association for Computing Machinery},
-  address   = {New York, NY, USA}
-}
+Will be updated upon publication.
 ```
 
 ## License
