@@ -46,3 +46,6 @@ Please feel free to use, modify, and distribute this software in accordance with
 This project contains the following open-source components:
 - **`PX4-Autopilot`**: BSD 3-Clause License (see [PX4-Autopilot/LICENSE](PX4-Autopilot/LICENSE))
 - **`px4_msgs`**: BSD 3-Clause License (see [swarmbox_ws/src/px4_msgs/LICENSE](swarmbox_ws/src/px4_msgs/LICENSE))
+
+## Zenodo Artifact
+The fully packaged dataset and integrated execution environment for reproducing the results in our FSE 2026 paper are available on [10.5281/zenodo.19344308](https://doi.org/10.5281/zenodo.19344308). 
