@@ -9,8 +9,8 @@
 
 [![SwarmBox Demo](docs/assets/swarmbox_demo.gif)](https://youtube.com/playlist?list=PLblIEJCjwr_9GblkuCmMhJYYMpxl0o2AT&si=M_tvInOar4bzts4j)
 
-
-## Table of Contents
+<!-- 
+## Documentation
 
 For detailed usage instructions and architecture overview of SwarmBox, please refer to the following documents:
 
@@ -18,7 +18,7 @@ For detailed usage instructions and architecture overview of SwarmBox, please re
 - [2. Quick Start Tutorial](docs/2_QUICK_START.md)
 - [3. System Architecture](docs/3_ARCHITECTURE.md)
 - [4. Integrated Analyzer](docs/4_ANALYZER.md)
-- [5. Reproducing Paper Results (AE)](docs/5_ARTIFACT_EVALUATION.md)
+- [5. Reproducing Paper Results (AE)](docs/5_ARTIFACT_EVALUATION.md) -->
 
 
 ## About the Paper & Citation (To Appear)
@@ -32,9 +32,17 @@ at the **ACM International Conference on the Foundations of Software Engineering
 
 If you use SwarmBox in your research, please cite our paper:
 
-```bibtex
-Will be updated upon publication.
+```tex
+% Will be updated upon publication.
 ```
 
-## License
-SwarmBox is licensed under the MIT License. See the [LICENSE](LICENSE) file for more details.
+## Open Source License
+
+As the goal of this project is to facilitate the research and development of drone swarm systems, 
+SwarmBox is an open-source project licensed under the MIT License. See the [LICENSE](LICENSE) file for more details. 
+
+Please feel free to use, modify, and distribute this software in accordance with the terms of the MIT License.
+
+This project contains the following open-source components:
+- **`PX4-Autopilot`**: BSD 3-Clause License (see [PX4-Autopilot/LICENSE](PX4-Autopilot/LICENSE))
+- **`px4_msgs`**: BSD 3-Clause License (see [swarmbox_ws/src/px4_msgs/LICENSE](swarmbox_ws/src/px4_msgs/LICENSE))
