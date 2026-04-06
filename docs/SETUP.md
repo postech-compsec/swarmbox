@@ -13,10 +13,25 @@ This document provides step-by-step instructions for setting up the SwarmBox fra
 Please refer to the official ROS 2 Humble installation guide for Ubuntu 22.04: [ROS 2 Humble Installation](https://docs.ros.org/en/humble/Installation/Ubuntu-Install-Debs.html)
 
 ### 2. Clone SwarmBox Repository
-You can clone the SwarmBox repository using the following command:
+#### A. Cloning from GitHub
+If you are setting up SwarmBox from our public repository, 
+you can clone the SwarmBox repository using the following command:
 
 ```bash
-git clone [https://github.com/postech-compsec/swarmbox.git](https://github.com/postech-compsec/swarmbox.git)
+git clone https://github.com/postech-compsec/swarmbox.git
+```
+
+#### B. Cloning from Zenodo
+If you have downloaded the SwarmBox artifact from Zenodo,
+you already have the main source code. 
+However, the heavy `PX4-Autopilot` submodule was not included in the Zenodo artifact due to size constraints.
+You must manually clone our modified PX4 repository into the `repository/PX4-Autopilot` directory before proceeding:
+```bash
+# in repository/ directory,
+git clone -b swarmbox/px4-v1.15 --single-branch --recursive https://github.com/postech-compsec/swarmbox-PX4.git PX4-Autopilot
+# to prevent potential issues with tags for PX4 make, we recommend using the following command to add tag manually after cloning:
+cd PX4-Autopilot
+git tag v1.15.4
 ```
 
 ### 3. Install SwarmBox and Dependencies
