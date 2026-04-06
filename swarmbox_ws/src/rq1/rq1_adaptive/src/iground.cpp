@@ -277,7 +277,9 @@ std::vector<Eigen::Vector2d> waypts2setpts(std::vector<Eigen::Vector2d> Path, RR
     double freq = 1;
     double dt = 1.0 / freq;
     double dx = V * dt;
-	std::vector<Eigen::Vector2d> traj_global = {Path.front()};
+	std::vector<Eigen::Vector2d> traj_global = {
+        Path.front()
+    };
     for (size_t i = 0; i < Path.size() - 1; ++i) {
         Eigen::Vector2d A = Path[i];
         Eigen::Vector2d B = Path[i + 1];

@@ -49,7 +49,6 @@ ros_timegaps = dict()
 ros_reference_ts = 0
 ground_init_time = 0
 
-
 # initialize variables
 init_pos = {}
 config_path = ''
