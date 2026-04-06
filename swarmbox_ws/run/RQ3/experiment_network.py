@@ -177,12 +177,12 @@ if __name__ == "__main__":
 
     # 2. Define the parameter space for the experiments
     # --- MODIFIED: Iterate through all drones to minimize location bias ---
-    # TARGET_DRONES = range(9) # Drones 0 through 8
-    TARGET_DRONES = [8] # FIXME: remove this
+    TARGET_DRONES = range(9) # Drones 0 through 8
+    # TARGET_DRONES = [8]
     
     # Define the values for each experiment
-    # DELAY_VALUES_MS = [0, 5, 10, 15, 20, 25]
-    DELAY_VALUES_MS = [25] # FIXME: remove this
+    DELAY_VALUES_MS = [0, 5, 10, 15, 20, 25]
+    # DELAY_VALUES_MS = [25]
 
     LOSS_VALUES_RATIO = np.arange(0.1, 0.6, 0.1) # 0.1, 0.2, 0.3, 0.4, 0.5
     

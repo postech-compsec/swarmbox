@@ -49,16 +49,6 @@ ros_timegaps = dict()
 ros_reference_ts = 0
 ground_init_time = 0
 
-# # find package name from launch_files[0] "DBG: Package name: " and save as package_name
-# if launch_files:
-#     with open(launch_files[0], 'r') as f:
-#         # FIXME:
-#         for line in f:
-#             if "DBG: Package name: " in line:
-#                 package_name = line.split("DBG: Package name: ")[1].strip()
-#                 break
-
-# print(f"Package name: {package_name}")
 
 # initialize variables
 init_pos = {}
