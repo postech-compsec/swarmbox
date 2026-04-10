@@ -12,6 +12,7 @@
 **SwarmBox** is a plug-and-play drone swarm framework for streamlined development and comprehensive analysis. It decouples high-level swarm logic from low-level flight control and provides a swarm-level integrated analyzer to facilitate debugging and reproducible experimentation.
 
 [![SwarmBox Demo](docs/assets/swarmbox_demo.gif)](https://youtube.com/playlist?list=PLblIEJCjwr_9GblkuCmMhJYYMpxl0o2AT&si=M_tvInOar4bzts4j)
+[**Watch the full demo video playlist on YouTube**](https://youtube.com/playlist?list=PLblIEJCjwr_9GblkuCmMhJYYMpxl0o2AT&si=M_tvInOar4bzts4j)
 
 ## Documentation
 For quick setup instructions, please refer to the [Setup Guide](docs/SETUP.md). 
