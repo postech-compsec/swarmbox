@@ -5,6 +5,7 @@
 ![Ubuntu 22.04](https://img.shields.io/badge/Ubuntu-22.04-orange?style=flat-square)
 ![ROS 2](https://img.shields.io/badge/ROS_2-Humble-lightgrey?style=flat-square)
 
+> [!WARNING]
 > Please be advised: SwarmBox is currently in its early stages of development, and there might be some rough edges.
 > We are actively working on improving the framework and will be updating the repository with more features, documentation, and examples in the near future.
 
@@ -45,3 +46,16 @@ This project contains the following open-source components:
 
 ## Zenodo Artifact
 The fully packaged dataset and integrated execution environment for reproducing the results in our FSE 2026 paper are available on [10.5281/zenodo.19344308](https://doi.org/10.5281/zenodo.19344308). 
+
+## Upcoming Features
+> [!NOTE]
+> The following features are currently under development or considered for future releases. We will update the repository with these features as they become available.
+
+- [In-Progress]
+    - Support for multi-layered DDS architecture for hierarchical swarm systems
+- [Planned]
+    - Hardware setup guide and description for real-world drone swarm deployment
+    - Support for Recent ROS 2 Distributions and Ubuntu 24.04 LTS
+    - Support for ArduPilot for broader hardware compatibility
+- [Exploring]
+    - Support for zenoh middleware for better performance and scalability
