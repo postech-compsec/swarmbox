@@ -28,7 +28,7 @@ at the **ACM International Conference on the Foundations of Software Engineering
 >
 > Minki Lee, Seojin Lee, and Seulbae Kim (To Appear)
 
-If you use SwarmBox in your research, please cite our paper:
+If you use SwarmBox in your research, please cite our [paper](https://compsec.postech.ac.kr/assets/publications/lee:swarmbox.pdf):
 
 ```tex
 % Will be updated upon publication.
