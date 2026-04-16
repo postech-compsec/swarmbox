@@ -157,8 +157,8 @@ last_edit_time_format: "%b %e %Y at %I:%M %p" # uses ruby's time format: https:/
 # Footer "Edit this page on GitHub" link text
 gh_edit_link: true 
 gh_edit_link_text: "Edit this page on GitHub"
-gh_edit_repository: "https://github.com/postech-compsec/swarmbox" # 우리 레포로 변경
-gh_edit_branch: "main" # 문서 소스가 있는 브랜치
+gh_edit_repository: "https://github.com/postech-compsec/swarmbox"
+gh_edit_branch: "main"
 # gh_edit_source: docs # the source that your files originate from
 gh_edit_view_mode: "tree" # "tree" or "edit" if you want the user to jump into the editor immediately
 
@@ -188,8 +188,8 @@ callouts:
 # Google Analytics Tracking (optional)
 # Supports a CSV of tracking ID strings (eg. "UA-1234567-89,G-1AB234CDE5")
 # Note: the main Just the Docs site does *not* use Google Analytics.
-# ga_tracking: UA-2709176-10,G-5FG1HLH3XQ
-# ga_tracking_anonymize_ip: true # Use GDPR compliant Google Analytics settings (true/nil by default)
+ga_tracking: G-9FNLW8JLZ4
+ga_tracking_anonymize_ip: true
 
 plugins:
   - jekyll-seo-tag
