@@ -1,3 +1,10 @@
+---
+layout: default
+title: Getting Started
+nav_order: 2
+permalink: /setup/
+---
+
 # How to Setup SwarmBox
 
 This document provides step-by-step instructions for setting up the SwarmBox framework on your local machine. Please follow the instructions carefully to ensure a successful installation.

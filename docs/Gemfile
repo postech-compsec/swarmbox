@@ -1,0 +1,10 @@
+source "https://rubygems.org"
+
+# gem "jekyll"
+gem "base64"
+gem "csv"
+gem "jekyll-github-metadata", ">= 2.15"
+gem "jekyll-sitemap", group: :jekyll_plugins
+
+gem "just-the-docs"
+gem "webrick"

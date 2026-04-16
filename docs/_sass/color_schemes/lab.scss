@@ -1,0 +1,38 @@
+$link-color: #d63384; 
+$btn-primary-color: #d63384;
+
+$nav-child-link-color: #d63384;
+
+$mono-font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+
+// html code tag: font size up 0.875em
+code {
+    font-size: 0.875em !important;
+    // color: $link-color !important;
+}
+
+pre {
+    code {
+        font-size: 0.875em !important;
+    }
+}
+
+.side-bar {
+    background-color: white !important;
+}
+
+.btn {
+    font-weight: 400 !important;
+    font-size: 0.875em !important;
+    padding: 0.2em 0.5em !important;
+}
+
+.btn-outline {
+    box-shadow: 0 0 0 1px $btn-primary-color inset !important;
+}
+
+.material-symbols-outlined {
+  vertical-align: middle;
+  font-size: 1.2em !important;
+  margin-top: -3px;
+}
