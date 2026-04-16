@@ -31,7 +31,9 @@ By offering a plug-and-play architecture, a swarm-level integrated analyzer, and
 
 ## Demo
 
-<iframe width="640" height="360" src="https://www.youtube.com/embed/HuoiBodCa1g?si=RhoVFkt3eU25RAZR" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+<div style="width: 100%; aspect-ratio: 16/9;">
+    <iframe width="100%" height="100%" src="https://www.youtube.com/embed/HuoiBodCa1g?si=RhoVFkt3eU25RAZR" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
 
 [**Watch the full demo video playlist on YouTube**](https://youtube.com/playlist?list=PLblIEJCjwr_9GblkuCmMhJYYMpxl0o2AT&si=M_tvInOar4bzts4j)
 
