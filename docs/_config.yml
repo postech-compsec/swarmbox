@@ -168,6 +168,8 @@ color_scheme: lab
 # When commented out, callouts_level defaults to quiet for the light scheme, and loud for dark
 # callouts_level: quiet # or loud
 callouts:
+  release:
+    color: grey-dk
   highlight:
     color: yellow
   important:
@@ -196,6 +198,8 @@ plugins:
   - jekyll-sitemap
 
 kramdown:
+  input: GFM
+  hard_wrap: false
   syntax_highlighter_opts:
     block:
       line_numbers: false
