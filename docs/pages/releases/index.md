@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Release Notes
-nav_order: 99
+nav_order: 98
 has_children: true
 permalink: /releases/
 has_toc: false

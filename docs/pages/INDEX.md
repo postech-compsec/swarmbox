@@ -69,13 +69,10 @@ If you find SwarmBox useful for your research, please consider citing our paper:
 ## Open Source License
 
 As the goal of this project is to facilitate the research and development of drone swarm systems, 
-SwarmBox is an open-source project licensed under the MIT License. See the [LICENSE](https://github.com/postech-compsec/swarmbox/blob/main/LICENSE) file for more details. 
-
+SwarmBox is an open-source project licensed under the MIT License. 
 Please feel free to use, modify, and distribute this software in accordance with the terms of the MIT License.
 
-This project contains the following open-source components:
-- **`PX4-Autopilot`**: BSD 3-Clause License (see [PX4-Autopilot/LICENSE](https://github.com/postech-compsec/swarmbox-PX4/blob/main/LICENSE))
-- **`px4_msgs`**: BSD 3-Clause License (see [swarmbox_ws/src/px4_msgs/LICENSE](https://github.com/postech-compsec/swarmbox/blob/main/swarmbox_ws/src/px4_msgs/LICENSE))
+See the [LICENSE]({% link pages/LICENSE.md %}) for more details. 
 
 ## Zenodo Artifact
 The fully packaged dataset and integrated execution environment for reproducing the results in our FSE 2026 paper 
