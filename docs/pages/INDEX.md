@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Home
+title: SwarmBox
 nav_order: 1
 permalink: /
 ---
@@ -8,10 +8,10 @@ permalink: /
 # SwarmBox 
 **SwarmBox** is an open-source drone swarm framework that aims to **decouple high-level swarm logic** from low-level flight control and **provide a swarm-level integrated analyzer** to facilitate debugging and reproducible experimentation.
 
-> **SwarmBox: A Plug-and-Play Drone Swarm Framework for Streamlined Development and Comprehensive Analysis**.  
+> **SwarmBox: A Plug-and-Play Drone Swarm Framework for Streamlined Development and Comprehensive Analysis** (To Appear).  
 > Minki Lee, Seojin Lee, and Seulbae Kim.  
 > In *Proceedings of the 34th ACM International Conference on the Foundations of Software Engineering ([FSE 2026](https://conf.researchr.org/home/fse-2026))*,  
-> Montreal, Canada, July 2026. (To Appear)
+> Montreal, Canada, July 2026. 
 
 [<span class="material-symbols-outlined">code</span> GitHub](https://github.com/postech-compsec/swarmbox){: .btn .btn-outline }
 [<span class="material-symbols-outlined">docs</span> Paper](https://compsec.postech.ac.kr/assets/publications/lee:swarmbox.pdf){: .btn .btn-outline }
