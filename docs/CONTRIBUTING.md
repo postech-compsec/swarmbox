@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Contributing to SwarmBox
-parent: Community
+parent: Community Guides
 nav_order: 2
 # permalink: /community/contributing/
 ---

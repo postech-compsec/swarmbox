@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Security Policy
-parent: Community
+parent: Community Guides
 nav_order: 3
 # permalink: /community/security/
 ---

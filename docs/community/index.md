@@ -1,6 +1,6 @@
 ---
 layout: default
-title: Community
+title: Community Guides
 nav_order: 97
 has_children: true
 permalink: /community/

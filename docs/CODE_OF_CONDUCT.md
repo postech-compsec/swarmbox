@@ -1,7 +1,7 @@
 ---
 layout: default
 title: Code of Conduct
-parent: Community
+parent: Community Guides
 nav_order: 1
 # permalink: /community/code_of_conduct/
 ---
