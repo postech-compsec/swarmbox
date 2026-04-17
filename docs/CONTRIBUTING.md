@@ -25,7 +25,7 @@ We welcome all kinds of contributions, including bug reports, feature requests, 
     Before creating a new issue, please check if a similar issue already exists to avoid duplicates.
 - **Security Vulnerabilities:** 
     Do **not** report security vulnerabilities via public issues. 
-    Please refer to our [Security Policy](community/security) for private reporting instructions.
+    Please refer to our [Security Policy](../SECURITY) for private reporting instructions.
 
 ## Pull Request Process
 
