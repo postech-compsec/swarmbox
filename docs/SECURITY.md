@@ -1,3 +1,11 @@
+---
+layout: default
+title: Security Policy
+parent: Community
+nav_order: 3
+# permalink: /community/security/
+---
+
 # Security Policy
 
 ## Supported Versions

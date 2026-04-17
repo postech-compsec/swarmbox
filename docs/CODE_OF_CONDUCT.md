@@ -1,3 +1,11 @@
+---
+layout: default
+title: Code of Conduct
+parent: Community
+nav_order: 1
+# permalink: /community/code_of_conduct/
+---
+
 # Contributor Covenant Code of Conduct
 
 ## Our Pledge

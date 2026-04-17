@@ -1,3 +1,11 @@
+---
+layout: default
+title: Contributing to SwarmBox
+parent: Community
+nav_order: 2
+# permalink: /community/contributing/
+---
+
 # Contributing to SwarmBox
 
 First off, thank you for considering contributing to SwarmBox! 
@@ -17,7 +25,7 @@ We welcome all kinds of contributions, including bug reports, feature requests, 
     Before creating a new issue, please check if a similar issue already exists to avoid duplicates.
 - **Security Vulnerabilities:** 
     Do **not** report security vulnerabilities via public issues. 
-    Please refer to our [SECURITY.md](/SECURITY.md) for private reporting instructions.
+    Please refer to our [Security Policy](community/security) for private reporting instructions.
 
 ## Pull Request Process
 
