@@ -16,16 +16,22 @@ This document provides step-by-step instructions for setting up the SwarmBox fra
 
 ## Installation Steps
 
-### 1. Install ROS 2 Humble
+### 1. Install Dependencies
+#### A. ROS 2 Humble
 Please refer to the official ROS 2 Humble installation guide for Ubuntu 22.04: [ROS 2 Humble Installation](https://docs.ros.org/en/humble/Installation/Ubuntu-Install-Debs.html)
 
+#### B. MicroXRCE-DDS
+Currently, SwarmBox only supports MicroXRCE-DDS as the underlying middleware for communication between swarm components.
+Please follow the instructions in the MicroXRCE-DDS documentation to install it on your system: [MicroXRCE-DDS Installation](https://docs.px4.io/v1.16/en/middleware/uxrce_dds)
+
+
 ### 2. Clone SwarmBox Repository
-#### A. Cloning from GitHub
+#### A. Cloning from GitHub (PX4 v1.16)
 If you are setting up SwarmBox from our public repository, 
 you can clone the SwarmBox repository using the following command:
 
 ```bash
-git clone https://github.com/postech-compsec/swarmbox.git
+git clone https://github.com/postech-compsec/swarmbox.git --recursive
 ```
 
 #### B. Cloning from Zenodo
