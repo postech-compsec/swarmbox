@@ -121,7 +121,7 @@ Drone::Drone(const rclcpp::NodeOptions & options) : SBNode("drone", options) {
             this->px4_local_pos_.vz);
     });
     px4_sub_command_ack_ = this->create_subscription<px4_msgs::msg::VehicleCommandAck>(this->px4_ns+"/fmu/out/vehicle_command_ack", qos, [this](const px4_msgs::msg::VehicleCommandAck::SharedPtr msg){ this->px4_vehicle_cmd_ack_ = *msg; });
-    px4_sub_vehiclestat_ = this->create_subscription<px4_msgs::msg::VehicleStatus>(this->px4_ns+"/fmu/out/vehicle_status", qos, [this](const px4_msgs::msg::VehicleStatus::SharedPtr msg){
+    px4_sub_vehiclestat_ = this->create_subscription<px4_msgs::msg::VehicleStatus>(this->px4_ns+"/fmu/out/vehicle_status_v1", qos, [this](const px4_msgs::msg::VehicleStatus::SharedPtr msg){
         // FAILSAFE ABORTION TURNED OFF FOR SITL TESTING
         if (msg->failsafe) {
             RCLCPP_WARN_ONCE(this->get_logger(), "Failsafe activated.");
