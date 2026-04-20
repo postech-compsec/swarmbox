@@ -28,6 +28,14 @@ echo "Initializing submodules..."
 git submodule update --init --recursive
 
 echo "Setting up Python environment..."
+PY_VER=$(python3 -c 'import sys; print(f"{sys.version_info.major}.{sys.version_info.minor}")')
+
+if ! python3 -m venv -h &> /dev/null; then
+    echo "venv module is missing for Python ${PY_VER}. Installing..."
+    sudo apt-get update -yq
+    sudo apt-get install -yq "python${PY_VER}-venv"
+fi
+
 python3 -m venv .venv
 source .venv/bin/activate
 
