@@ -36,7 +36,7 @@ for ((n=0; n<=drones; n++)); do
         north=$((-1 * east * ((-1)**n)))
     fi
 
-    command="PX4_SYS_AUTOSTART=4001$hdls PX4_SIM_MODEL=gz_x500 PX4_GZ_MODEL_POSE=\"$north,$east,0,0,0,0\" $PX4_PATH -i $n"
+    command="PX4_SYS_AUTOSTART=4101$hdls PX4_SIM_MODEL=gz_x500 PX4_GZ_MODEL_POSE=\"$north,$east,0,0,0,0\" $PX4_PATH -i $n"
     tmux send-keys -t $SESSION_NAME "$command" C-m
     tmux split-window -v
     tmux select-layout tiled
