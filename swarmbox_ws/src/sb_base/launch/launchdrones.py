@@ -49,6 +49,7 @@ def launch_setup(context: LaunchContext):
 
     log_dir_ss = launch_config.log_dir
     set_env_var = SetEnvironmentVariable('ROS_LOG_DIR', log_dir_ss)
+    set_domain_zero = SetEnvironmentVariable('ROS_DOMAIN_ID', '0')
     node_name = 'drone'
 
     num_drones_val = len(drone_configs['superiors'])
@@ -89,7 +90,7 @@ def launch_setup(context: LaunchContext):
         nodes_to_launch.append(
             delayed_node
         )
-    return [set_env_var] + nodes_to_launch
+    return [set_env_var, set_domain_zero] + nodes_to_launch
 
 def generate_launch_description():
     return LaunchDescription([

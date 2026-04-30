@@ -40,6 +40,8 @@ public:
     Drone(int id, int superior, float location[3]);
     virtual ~Drone();
 
+    rclcpp::Node::SharedPtr get_px4_node() {return px4_node_;}
+
 protected:
     //================================================================
     // Protected Interface: Accessible by this class and derived classes (e.g., UserDrone)
@@ -60,6 +62,8 @@ protected:
     virtual void exec_once();
     virtual std::optional<setpoint> exec_loop();
     virtual bool exec_complete();
+
+    std::mutex state_mutex_;
 
 
     // --- Current State Variables ---
@@ -176,4 +180,7 @@ private:
     rclcpp::Subscription<sb_base::msg::TaskCommand>::SharedPtr              box_sub_task_cmd_;
     rclcpp::Subscription<sb_base::msg::ProxAlert>::SharedPtr                box_sub_prox_alert_;
     rclcpp::Subscription<sb_base::msg::Report>::SharedPtr                   box_sub_reports_;
+
+    rclcpp::Context::SharedPtr px4_context_;
+    rclcpp::Node::SharedPtr px4_node_;
 };
