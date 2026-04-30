@@ -25,6 +25,20 @@ Drone::Drone(const rclcpp::NodeOptions & options) : SBNode("drone", options) {
     this->init_pos.y() = loc[1];
     this->init_pos.z() = loc[2];
 
+    /* ROS_DOMAIN separation for each drones' internal network >>> */
+    rclcpp::InitOptions px4_init_options;
+    px4_init_options.set_domain_id(10 + this->identity);
+
+    this->px4_context_ = std::make_shared<rclcpp::Context>();
+    this->px4_context_->init(0, nullptr, px4_init_options);
+
+    rclcpp::NodeOptions px4_node_options;
+    px4_node_options.context(this->px4_context_);
+    this->px4_node_ = std::make_shared<rclcpp::Node>("px4_bridge", px4_node_options);
+    
+    
+    /* <<< ROS_DOMAIN separation for each drones' internal network */
+
     // Initialize QoS profile
     rmw_qos_profile_t qos_profile = rmw_qos_profile_sensor_data;
     auto qos = rclcpp::QoS(rclcpp::QoSInitialization(qos_profile.history, 10), qos_profile);
@@ -78,21 +92,23 @@ Drone::Drone(const rclcpp::NodeOptions & options) : SBNode("drone", options) {
 
     // --- ROS2 Publisher/Subscriber Setup ---
     // PX4 Publishers
-    px4_pub_offboard_ = this->create_publisher<px4_msgs::msg::OffboardControlMode>(this->px4_ns+"/fmu/in/offboard_control_mode", 10);
-    px4_pub_command_ = this->create_publisher<px4_msgs::msg::VehicleCommand>(this->px4_ns+"/fmu/in/vehicle_command", 10);
-    px4_pub_traj_setpoint_ = this->create_publisher<px4_msgs::msg::TrajectorySetpoint>(this->px4_ns+"/fmu/in/trajectory_setpoint", 10);
+    px4_pub_offboard_ = this->px4_node_->create_publisher<px4_msgs::msg::OffboardControlMode>(this->px4_ns+"/fmu/in/offboard_control_mode", 10);
+    px4_pub_command_ = this->px4_node_->create_publisher<px4_msgs::msg::VehicleCommand>(this->px4_ns+"/fmu/in/vehicle_command", 10);
+    px4_pub_traj_setpoint_ = this->px4_node_->create_publisher<px4_msgs::msg::TrajectorySetpoint>(this->px4_ns+"/fmu/in/trajectory_setpoint", 10);
     
     
     // PX4 Subscribers
-    px4_sub_global_pos_ = this->create_subscription<px4_msgs::msg::VehicleGlobalPosition>(
+    px4_sub_global_pos_ = this->px4_node_->create_subscription<px4_msgs::msg::VehicleGlobalPosition>(
                             this->px4_ns+"/fmu/out/vehicle_global_position", qos, 
                             [this](const px4_msgs::msg::VehicleGlobalPosition::SharedPtr msg){ 
+        std::lock_guard<std::mutex> lock(this->state_mutex_);
         this->px4_global_pos_ = *msg;
         // this->gps_updated = true;
     });
-    px4_sub_sensorgps_ = this->create_subscription<px4_msgs::msg::SensorGps>(
+    px4_sub_sensorgps_ = this->px4_node_->create_subscription<px4_msgs::msg::SensorGps>(
                             this->px4_ns+"/fmu/out/sensor_gps", qos, 
                             [this](const px4_msgs::msg::SensorGps::SharedPtr msg){ 
+        std::lock_guard<std::mutex> lock(this->state_mutex_);
         this->px4_sensorgps_ = *msg;
         // update only if it's in exec stage: to prevent bias caused from initializing error.
         if (this->stage >= STAGE_EXEC) {
@@ -109,7 +125,8 @@ Drone::Drone(const rclcpp::NodeOptions & options) : SBNode("drone", options) {
             this->gps_updated = true;
         }
     });
-    px4_sub_local_pos_ = this->create_subscription<px4_msgs::msg::VehicleLocalPosition>(this->px4_ns+"/fmu/out/vehicle_local_position", qos, [this](const px4_msgs::msg::VehicleLocalPosition::SharedPtr msg){ 
+    px4_sub_local_pos_ = this->px4_node_->create_subscription<px4_msgs::msg::VehicleLocalPosition>(this->px4_ns+"/fmu/out/vehicle_local_position", qos, [this](const px4_msgs::msg::VehicleLocalPosition::SharedPtr msg){ 
+        std::lock_guard<std::mutex> lock(this->state_mutex_);
         this->px4_local_pos_ = *msg;
         this->world_pos = Eigen::Vector3d(
             this->px4_local_pos_.x + this->init_pos.x(), 
@@ -120,9 +137,12 @@ Drone::Drone(const rclcpp::NodeOptions & options) : SBNode("drone", options) {
             this->px4_local_pos_.vy, 
             this->px4_local_pos_.vz);
     });
-    px4_sub_command_ack_ = this->create_subscription<px4_msgs::msg::VehicleCommandAck>(this->px4_ns+"/fmu/out/vehicle_command_ack", qos, [this](const px4_msgs::msg::VehicleCommandAck::SharedPtr msg){ this->px4_vehicle_cmd_ack_ = *msg; });
-    px4_sub_vehiclestat_ = this->create_subscription<px4_msgs::msg::VehicleStatus>(this->px4_ns+"/fmu/out/vehicle_status_v1", qos, [this](const px4_msgs::msg::VehicleStatus::SharedPtr msg){
-        // FAILSAFE ABORTION TURNED OFF FOR SITL TESTING
+    px4_sub_command_ack_ = this->px4_node_->create_subscription<px4_msgs::msg::VehicleCommandAck>(this->px4_ns+"/fmu/out/vehicle_command_ack", qos, [this](const px4_msgs::msg::VehicleCommandAck::SharedPtr msg){ 
+            std::lock_guard<std::mutex> lock(this->state_mutex_);
+        this->px4_vehicle_cmd_ack_ = *msg; 
+    });
+    px4_sub_vehiclestat_ = this->px4_node_->create_subscription<px4_msgs::msg::VehicleStatus>(this->px4_ns+"/fmu/out/vehicle_status_v1", qos, [this](const px4_msgs::msg::VehicleStatus::SharedPtr msg){
+            std::lock_guard<std::mutex> lock(this->state_mutex_);        // FAILSAFE ABORTION TURNED OFF FOR SITL TESTING
         if (msg->failsafe) {
             RCLCPP_WARN_ONCE(this->get_logger(), "Failsafe activated.");
         //     this->stage = STAGE_ABRT;
@@ -131,7 +151,8 @@ Drone::Drone(const rclcpp::NodeOptions & options) : SBNode("drone", options) {
         }
         this->armed = (msg->arming_state - 1);
     });
-    px4_sub_land_detected_ = this->create_subscription<px4_msgs::msg::VehicleLandDetected>(this->px4_ns+"/fmu/out/vehicle_land_detected", qos, [this](const px4_msgs::msg::VehicleLandDetected::SharedPtr msg){
+    px4_sub_land_detected_ = this->px4_node_->create_subscription<px4_msgs::msg::VehicleLandDetected>(this->px4_ns+"/fmu/out/vehicle_land_detected", qos, [this](const px4_msgs::msg::VehicleLandDetected::SharedPtr msg){
+        std::lock_guard<std::mutex> lock(this->state_mutex_);
         // RCLCPP_INFO(this->get_logger(), "Ground contact: %d, Maybe landed: %d", msg->ground_contact, msg->maybe_landed);
         RCLCPP_INFO_ONCE(this->get_logger(), "PX4 timestamp: %ld", msg->timestamp);
         if (this->stage == STAGE_FINI && msg->landed) {
@@ -325,6 +346,8 @@ bool Drone::exec_complete() {
 //=============================================
 
 void Drone::timer_callback() {
+    std::lock_guard<std::mutex> lock(this->state_mutex_);
+
     this->tick++;
     // Superior connection check
     // RCLCPP_DEBUG(this->get_logger(), "Timeout watchdog: lost %d stage %d", this->sup_lost_count, this->stage);
