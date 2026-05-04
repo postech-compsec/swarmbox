@@ -69,8 +69,9 @@ please refer to the following hardware and software stack used for our ongoing d
 
 - **Workstation**: 
     - **Hardware**: AMD 9800X3D, 64GB RAM
-    - **OS**: Ubuntu 22.04.5 LTS
-- **ROS**: ROS 2 Humble Hawksbill
+    - **OS and ROS 2**: 
+        - 24.04 LTS with ROS 2 Jazzy
+        - 22.04 LTS with ROS 2 Humble (**DEPRECATED**, for original artifact on Zenodo)
 - **Physical Drones (NOT REQUIRED FOR VM EXECUTION)**: 
     - **Drone**: Holybro X500 V2
     - **Flight Controller**: Pixhawk 6C
