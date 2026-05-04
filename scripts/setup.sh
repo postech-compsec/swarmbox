@@ -56,8 +56,18 @@ echo "Building PX4-Autopilot..."
 (cd PX4-Autopilot && make px4_sitl)
 
 echo "Building ROS 2 workspace..."
-source /opt/ros/humble/setup.bash
+if [ -f "/opt/ros/jazzy/setup.bash" ]; then
+    ROS_DISTRO="jazzy"
+elif [ -f "/opt/ros/humble/setup.bash" ]; then
+    ROS_DISTRO="humble"
+else
+    echo "❌ Error: Neither ROS 2 Jazzy nor Humble setup file was found in /opt/ros/"
+    echo "Please ensure ROS 2 is installed correctly."
+    exit 1
+fi
+
+source /opt/ros/${ROS_DISTRO}/setup.bash
 (cd swarmbox_ws && colcon build)
 
 echo "We recommend to add the following line to your .bashrc or .zshrc to source the ROS 2 workspace automatically:"
-echo "source /opt/ros/humble/setup.bash (or .zsh)"
+echo "source /opt/ros/${ROS_DISTRO}/setup.bash (or .zsh)"
