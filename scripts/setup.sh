@@ -58,10 +58,10 @@ echo "Building PX4-Autopilot..."
 echo "Building ROS 2 workspace..."
 if [ -f "/opt/ros/jazzy/setup.bash" ]; then
     ROS_DISTRO="jazzy"
-elif [ -f "/opt/ros/humble/setup.bash" ]; then
-    ROS_DISTRO="humble"
+# elif [ -f "/opt/ros/humble/setup.bash" ]; then
+#     ROS_DISTRO="humble"
 else
-    echo "❌ Error: Neither ROS 2 Jazzy nor Humble setup file was found in /opt/ros/"
+    echo "Error: Neither ROS 2 Jazzy setup file was found in /opt/ros/"
     echo "Please ensure ROS 2 is installed correctly."
     exit 1
 fi

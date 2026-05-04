@@ -2,8 +2,8 @@
 
 ![FSE 2026 Accepted](https://img.shields.io/badge/FSE_2026-Accepted-success?style=flat-square)
 ![License: MIT](https://img.shields.io/badge/License-MIT-blue?style=flat-square)
-![Ubuntu 22.04](https://img.shields.io/badge/Ubuntu-22.04-orange?style=flat-square)
-![ROS 2](https://img.shields.io/badge/ROS_2-Humble-lightgrey?style=flat-square)
+![Ubuntu 24.04](https://img.shields.io/badge/Ubuntu-24.04-orange?style=flat-square)
+![ROS 2 Jazzy](https://img.shields.io/badge/ROS_2-Jazzy-lightgrey?style=flat-square)
 
 
 > [!WARNING]
