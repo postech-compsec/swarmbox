@@ -16,22 +16,24 @@
 [![SwarmBox Demo](docs/assets/swarmbox_demo.gif)](https://youtube.com/playlist?list=PLblIEJCjwr_9GblkuCmMhJYYMpxl0o2AT&si=M_tvInOar4bzts4j)
 [**Watch the full demo video playlist on YouTube**](https://youtube.com/playlist?list=PLblIEJCjwr_9GblkuCmMhJYYMpxl0o2AT&si=M_tvInOar4bzts4j)
 
-## Documentation
-[Visit Project Home: https://compsec.postech.ac.kr/swarmbox](https://compsec.postech.ac.kr/swarmbox)
+## Project Homepage & Documentation
 
-For detailed documentation, including architecture overview, API reference, and usage examples, will be available soon. Please stay tuned for updates!
+We host a dedicated project homepage to enhance the discoverability of SwarmBox and provide highly readable documentation.
 
-## About the Paper & Citation (To Appear)
+- **Project Homepage:** [https://compsec.postech.ac.kr/swarmbox](https://compsec.postech.ac.kr/swarmbox)
 
-This repository contains the source code and artifact for the following paper accepted 
-at the **ACM International Conference on the Foundations of Software Engineering (FSE 2026)**.
+Detailed documentation, including architecture overview, API reference, and usage examples, will be available soon.
+Please stay tuned for updates!
 
-> **SwarmBox: A Plug-and-Play Drone Swarm Framework for Streamlined Development and Comprehensive Analysis** 
->
-> Minki Lee, Seojin Lee, and Seulbae Kim (To Appear)
+## Paper & Citation (To Appear)
 
-If you find SwarmBox useful for your research, please consider citing our paper:
-([pdf](https://compsec.postech.ac.kr/assets/publications/lee:swarmbox.pdf), [DOI](https://doi.org/10.1145/3808100)):
+SwarmBox has been accepted for publication in the proceedings of
+the **ACM International Conference on the Foundations of Software Engineering (FSE 2026)**.
+
+> **SwarmBox: A Plug-and-Play Drone Swarm Framework for Streamlined Development and Comprehensive Analysis**  
+> by Minki Lee, Seojin Lee, and Seulbae Kim (To Appear)
+
+If you find SwarmBox useful for your research, please consider citing our paper ([pdf](https://compsec.postech.ac.kr/assets/publications/lee:swarmbox.pdf), [DOI](https://doi.org/10.1145/3808100)):
 
 ```bibtex
 @article{lee2026swarmbox,
@@ -52,6 +54,8 @@ If you find SwarmBox useful for your research, please consider citing our paper:
 }
 ```
 
+## Zenodo Artifact
+The fully packaged dataset and integrated execution environment for reproducing the results in our FSE 2026 paper are available on [10.5281/zenodo.19344308](https://doi.org/10.5281/zenodo.19344308). 
 
 ## Open Source License
 
@@ -63,19 +67,3 @@ Please feel free to use, modify, and distribute this software in accordance with
 This project contains the following open-source components:
 - **`PX4-Autopilot`**: BSD 3-Clause License (see [PX4-Autopilot/LICENSE](PX4-Autopilot/LICENSE))
 - **`px4_msgs`**: BSD 3-Clause License (see [swarmbox_ws/src/px4_msgs/LICENSE](swarmbox_ws/src/px4_msgs/LICENSE))
-
-## Zenodo Artifact
-The fully packaged dataset and integrated execution environment for reproducing the results in our FSE 2026 paper are available on [10.5281/zenodo.19344308](https://doi.org/10.5281/zenodo.19344308). 
-
-## Upcoming Features
-> [!NOTE]
-> The following features are currently under development or considered for future releases. We will update the repository with these features as they become available.
-
-- [In-Progress]
-    - Support for multi-layered DDS architecture for hierarchical swarm systems
-- [Planned]
-    - Hardware setup guide and description for real-world drone swarm deployment
-    - Support for Recent ROS 2 Distributions and Ubuntu 24.04 LTS
-    - Support for ArduPilot for broader hardware compatibility
-- [Exploring]
-    - Support for zenoh middleware for better performance and scalability
