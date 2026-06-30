@@ -10,6 +10,9 @@ PX4_PATH="PX4-Autopilot/build/px4_sitl_default/bin/px4"
 GZ_IP=${GZ_IP:-127.0.0.1}
 GZ_PARTITION=${GZ_PARTITION:-swarmbox}
 
+DDS_DEFAULT_PORT=8888
+
+
 pkill ruby 2>/dev/null
 pkill -x px4 2>/dev/null
 pkill -9 -f "gz sim" 2>/dev/null
@@ -20,6 +23,8 @@ x_r=$2
 headless=${3:-0} 
 
 SESSION_NAME="swarmbox"
+# TODO: kill tmux session if exists
+tmux kill-session -t $SESSION_NAME 2>/dev/null
 tmux new-session -d -s $SESSION_NAME 2>/dev/null || tmux attach -t $SESSION_NAME
 
 if [ "$headless" -eq 0 ]; then
@@ -41,7 +46,7 @@ for ((n=0; n<=drones; n++)); do
         north=$((-1 * east * ((-1)**n)))
     fi
 
-    command="GZ_IP=$GZ_IP GZ_PARTITION=$GZ_PARTITION PX4_SYS_AUTOSTART=4101$hdls PX4_SIM_MODEL=gz_x500 PX4_GZ_MODEL_POSE=\"$north,$east,0,0,0,0\" $PX4_PATH -i $n"
+    command="ROS_DOMAIN_ID=$((10+n)) PX4_UXRCE_DDS_PORT=$((DDS_DEFAULT_PORT + 10 + n)) GZ_IP=$GZ_IP GZ_PARTITION=$GZ_PARTITION PX4_SYS_AUTOSTART=4101$hdls PX4_SIM_MODEL=gz_x500 PX4_GZ_MODEL_POSE=\"$north,$east,0,0,0,0\" $PX4_PATH -i $n"
     tmux send-keys -t $SESSION_NAME "$command" C-m
     tmux split-window -v
     tmux select-layout tiled

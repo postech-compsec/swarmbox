@@ -138,11 +138,11 @@ Drone::Drone(const rclcpp::NodeOptions & options) : SBNode("drone", options) {
             this->px4_local_pos_.vz);
     });
     px4_sub_command_ack_ = this->px4_node_->create_subscription<px4_msgs::msg::VehicleCommandAck>(this->px4_ns+"/fmu/out/vehicle_command_ack", qos, [this](const px4_msgs::msg::VehicleCommandAck::SharedPtr msg){ 
-            std::lock_guard<std::mutex> lock(this->state_mutex_);
+        std::lock_guard<std::mutex> lock(this->state_mutex_);
         this->px4_vehicle_cmd_ack_ = *msg; 
     });
     px4_sub_vehiclestat_ = this->px4_node_->create_subscription<px4_msgs::msg::VehicleStatus>(this->px4_ns+"/fmu/out/vehicle_status_v1", qos, [this](const px4_msgs::msg::VehicleStatus::SharedPtr msg){
-            std::lock_guard<std::mutex> lock(this->state_mutex_);        // FAILSAFE ABORTION TURNED OFF FOR SITL TESTING
+        std::lock_guard<std::mutex> lock(this->state_mutex_);        // FAILSAFE ABORTION TURNED OFF FOR SITL TESTING
         if (msg->failsafe) {
             RCLCPP_WARN_ONCE(this->get_logger(), "Failsafe activated.");
         //     this->stage = STAGE_ABRT;
@@ -213,6 +213,15 @@ Drone::Drone(const rclcpp::NodeOptions & options) : SBNode("drone", options) {
             this->inf_descs[msg->orig_id] = msg->descendants; // Update descendants
         }
     });
+
+    // Spin the PX4 bridge node in its own executor/context.
+    rclcpp::ExecutorOptions px4_exec_options;
+    px4_exec_options.context = this->px4_context_;
+    this->px4_executor_ = std::make_shared<rclcpp::executors::SingleThreadedExecutor>(px4_exec_options);
+    this->px4_executor_->add_node(this->px4_node_);
+    this->px4_spin_thread_ = std::thread([this]() {
+        this->px4_executor_->spin();
+    });
         
     // Main timer
     timer_ = this->create_wall_timer(25ms, std::bind(&Drone::timer_callback, this));
@@ -220,6 +229,22 @@ Drone::Drone(const rclcpp::NodeOptions & options) : SBNode("drone", options) {
 
 
 Drone::~Drone() {
+    if (this->px4_executor_) {
+        this->px4_executor_->cancel();
+    }
+
+    if (this->px4_spin_thread_.joinable()) {
+        this->px4_spin_thread_.join();
+    }
+
+    if (this->px4_executor_ && this->px4_node_) {
+        this->px4_executor_->remove_node(this->px4_node_);
+    }
+
+    if (this->px4_context_ && this->px4_context_->is_valid()) {
+        this->px4_context_->shutdown("Drone destructor");
+    }
+
     RCLCPP_WARN(this->get_logger(), "Drone node terminated.");
 }
 

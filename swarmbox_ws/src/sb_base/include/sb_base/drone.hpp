@@ -5,6 +5,7 @@
 #include <string>
 #include <cmath>
 #include <optional>
+#include <thread>
 
 // base node
 #include "sb_base/sb_node.hpp"
@@ -183,4 +184,6 @@ private:
 
     rclcpp::Context::SharedPtr px4_context_;
     rclcpp::Node::SharedPtr px4_node_;
+    rclcpp::executors::SingleThreadedExecutor::SharedPtr px4_executor_;
+    std::thread px4_spin_thread_;
 };
