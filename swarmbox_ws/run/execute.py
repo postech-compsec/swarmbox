@@ -20,7 +20,8 @@ print(f"SwarmBox directory: {WORKSPACE}")
 
 PX4_SCRIPT = os.path.join(WORKSPACE, "scripts/px4_swarm_tmux.sh")
 SETUP_SCRIPT = os.path.join(WORKSPACE, "swarmbox_ws/install/local_setup.bash") 
-AGENT_CMD = ["MicroXRCEAgent", "udp4", "-p", "8888"]
+AGENT_CMD = ["MicroXRCEAgent", "udp4", "-p"]
+DDS_DEFAULT_PORT = 8888
 
 print(f"tmux script: {PX4_SCRIPT}")
 
@@ -53,14 +54,26 @@ def graceful_shutdown(external_processes):
     """
     print("\n--- Starting Graceful Shutdown ---")
 
+    def iter_processes(items):
+        """Yield only Popen-like objects, flattening nested lists/tuples."""
+        for item in items:
+            if isinstance(item, (list, tuple)):
+                for sub in item:
+                    if hasattr(sub, "poll"):
+                        yield sub
+            elif hasattr(item, "poll"):
+                yield item
+
+    processes = list(iter_processes(external_processes))
+
     print("  - Terminating external processes (ROS, Agent)...")
-    for p in external_processes:
+    for p in processes:
         if p and p.poll() is None:
             p.terminate()  # SIGTERM
     
     time.sleep(1)
     
-    for p in external_processes:
+    for p in processes:
         if p and p.poll() is None:
             p.kill() #SIGKILL
 
@@ -86,7 +99,8 @@ def graceful_shutdown(external_processes):
 # --- Main Logic ---
 def main():
     script_start_time = time.time()
-    agent_process, ground_process, drones_process = None, None, None
+    agent_process = []
+    ground_process, drones_process = None, None
 
     parser = argparse.ArgumentParser(description="SwarmBox Execution Script")
     parser.add_argument('--config', required=True, type=str, help='Path to the configuration file')
@@ -96,7 +110,7 @@ def main():
 
     CONFIG_FILE = args.config
     HEADLESS = "0" if args.gz else "1"
-    nod = 0 # initial value
+    nod = 0 #< number of drones, initial value 0
     DRONES_PER_ROW = 0
 
     try:
@@ -124,8 +138,27 @@ def main():
         print(f"Starting single run for: {CONFIG_FILE}")
         print(f"{'='*60}")
 
-        print("  - Starting MicroXRCE-DDS Agent...")
-        agent_process = subprocess.Popen(AGENT_CMD, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        print("  - Starting MicroXRCE-DDS Networks...")
+        agent_process.append(
+            subprocess.Popen(
+                AGENT_CMD + [str(DDS_DEFAULT_PORT)], 
+                stdout=subprocess.DEVNULL, 
+                stderr=subprocess.DEVNULL
+            )
+        )
+
+        if (nod > 0):
+            print(f"  - Number of drones: {nod}")
+            # execute internal DDS per drone on ROS_DOMAIN_ID=(10+drone_id)
+            for drone_id in range(nod):
+                agent_process.append(
+                    subprocess.Popen(
+                        AGENT_CMD + [str(DDS_DEFAULT_PORT + 10 + drone_id)], 
+                        stdout=subprocess.DEVNULL, 
+                        stderr=subprocess.DEVNULL, 
+                        env={**os.environ, "ROS_DOMAIN_ID": str(10+drone_id)}
+                    )
+                )
 
         # read CONFIG_FILE has 'formation', 
         if ('formation' in CONFIG_FILE) or ('formation' in os.path.basename(CONFIG_FILE)) or ('rq2' in CONFIG_FILE) or ('rq2' in os.path.basename(CONFIG_FILE)):
@@ -160,7 +193,7 @@ def main():
         print(f"\n\nAn unexpected error occurred: {e}")
         sys.exit(1)
     finally:
-        all_processes = [p for p in [agent_process, ground_process, drones_process] if p]
+        all_processes = [agent_process, ground_process, drones_process]
         graceful_shutdown(all_processes)
     
     print("\n--- Starting Post-Processing ---")
