@@ -5,6 +5,11 @@ PX4_PATH="PX4-Autopilot/build/px4_sitl_default/bin/px4"
 # usage: ./px4_swarm_tmux.sh <number_of_drones> <num_of_drones_on_one_row> <headless_flag>
 # automates px4 simulation multi drone runs
 
+# Stabilize Gazebo discovery for multi-process launches.
+# You can override these before running the script.
+GZ_IP=${GZ_IP:-127.0.0.1}
+GZ_PARTITION=${GZ_PARTITION:-swarmbox}
+
 pkill ruby 2>/dev/null
 pkill -x px4 2>/dev/null
 pkill -9 -f "gz sim" 2>/dev/null
@@ -36,7 +41,7 @@ for ((n=0; n<=drones; n++)); do
         north=$((-1 * east * ((-1)**n)))
     fi
 
-    command="PX4_SYS_AUTOSTART=4101$hdls PX4_SIM_MODEL=gz_x500 PX4_GZ_MODEL_POSE=\"$north,$east,0,0,0,0\" $PX4_PATH -i $n"
+    command="GZ_IP=$GZ_IP GZ_PARTITION=$GZ_PARTITION PX4_SYS_AUTOSTART=4101$hdls PX4_SIM_MODEL=gz_x500 PX4_GZ_MODEL_POSE=\"$north,$east,0,0,0,0\" $PX4_PATH -i $n"
     tmux send-keys -t $SESSION_NAME "$command" C-m
     tmux split-window -v
     tmux select-layout tiled
