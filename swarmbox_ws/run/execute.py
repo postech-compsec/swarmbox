@@ -53,14 +53,26 @@ def graceful_shutdown(external_processes):
     """
     print("\n--- Starting Graceful Shutdown ---")
 
+    def iter_processes(items):
+        """Yield only Popen-like objects, flattening nested lists/tuples."""
+        for item in items:
+            if isinstance(item, (list, tuple)):
+                for sub in item:
+                    if hasattr(sub, "poll"):
+                        yield sub
+            elif hasattr(item, "poll"):
+                yield item
+
+    processes = list(iter_processes(external_processes))
+
     print("  - Terminating external processes (ROS, Agent)...")
-    for p in external_processes:
+    for p in processes:
         if p and p.poll() is None:
             p.terminate()  # SIGTERM
     
     time.sleep(1)
     
-    for p in external_processes:
+    for p in processes:
         if p and p.poll() is None:
             p.kill() #SIGKILL
 
