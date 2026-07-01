@@ -25,13 +25,13 @@ We host a dedicated project homepage to enhance the discoverability of SwarmBox 
 Detailed documentation, including architecture overview, API reference, and usage examples, will be available soon.
 Please stay tuned for updates!
 
-## Paper & Citation (To Appear)
+## Paper & Citation
 
 SwarmBox has been accepted for publication in the proceedings of
 the **ACM International Conference on the Foundations of Software Engineering (FSE 2026)**.
 
 > **SwarmBox: A Plug-and-Play Drone Swarm Framework for Streamlined Development and Comprehensive Analysis**  
-> by Minki Lee, Seojin Lee, and Seulbae Kim (To Appear)
+> by Minki Lee, Seojin Lee, and Seulbae Kim
 
 If you find SwarmBox useful for your research, please consider citing our paper ([pdf](https://compsec.postech.ac.kr/assets/publications/lee:swarmbox.pdf), [DOI](https://doi.org/10.1145/3808100)):
 
