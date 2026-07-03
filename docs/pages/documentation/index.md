@@ -33,15 +33,15 @@ We recommend reading the documentation in order, but you can also jump to specif
 > The documentation is still under development, and some sections are incomplete. Sections marked with a 🚧 are works in progress and will be updated soon.
 > {: .new}
 
-1. [🚧 Getting Started]<!-- ({% link pages/documentation/getting-started.md %}) -->  
-2. [🚧 Architecture Overview]<!-- ({% link pages/documentation/architecture.md %}) -->  
-3. [🚧 Mission Configuration]<!-- ({% link pages/documentation/mission.md %}) -->  
+1. [🚧 Getting Started](#)  
+2. [🚧 Architecture Overview](#)  
+3. [🚧 Mission Configuration](#)  
 4. [Network Configuration]({% link pages/documentation/network.md %})  
-5. [🚧 Implementing Custom Logic]<!-- ({% link pages/documentation/implementation.md %}) -->  
-6. [🚧 Execution]<!-- ({% link pages/documentation/execution/index.md %}) -->  
-    a. [🚧 SITL Simulation]<!-- ({% link pages/documentation/execution/SITL-simulation.md %}) -->  
-    b. [🚧 Hardware Deployment]<!-- ({% link pages/documentation/execution/hardware-deployment.md %}) -->  
-7. [🚧 Troubleshooting]<!-- ({% link pages/documentation/troubleshooting.md %}) -->  
+5. [🚧 Implementing Custom Logic](#)  
+6. [🚧 Execution](#)  
+    a. [🚧 SITL Simulation](#)  
+    b. [🚧 Hardware Deployment](#)  
+7. [🚧 Troubleshooting](#)  
 
 ## What You Will Learn
 - How SwarmBox separates swarm-level logic from low-level flight control.
@@ -51,5 +51,5 @@ We recommend reading the documentation in order, but you can also jump to specif
 - How to avoid common setup and networking pitfalls.
 
 ## Start Here
-If you are new to the project, begin with [Getting Started]({% link pages/documentation/getting-started.md %}) and aim to complete one successful SITL run first.
+If you are new to the project, begin with [Getting Started](#) and aim to complete one successful SITL run first.
 
