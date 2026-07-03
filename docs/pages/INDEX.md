@@ -83,10 +83,10 @@ are available on [10.5281/zenodo.19344308](https://doi.org/10.5281/zenodo.193443
 {: .note }
 
 - **In-Progress**
-    - Support for multi-layered DDS architecture for hierarchical swarm systems
+    - Support for PX4 v1.17
+    - Creating guide documentation for SwarmBox
 - **Planned**
     - Hardware setup guide and description for real-world drone swarm deployment
-    - Support for Recent ROS 2 Distributions and Ubuntu 24.04 LTS
     - Support for ArduPilot for broader hardware compatibility
 - **Exploring**
-    - Support for zenoh middleware for better performance and scalability
+    - Support for Zenoh middleware for better performance and scalability
