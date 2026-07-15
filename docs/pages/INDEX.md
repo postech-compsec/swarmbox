@@ -15,8 +15,10 @@ permalink: /
 
 [<span class="material-symbols-outlined">code</span> GitHub](https://github.com/postech-compsec/swarmbox){: .btn .btn-outline }
 [<span class="material-symbols-outlined">docs</span> Paper](https://compsec.postech.ac.kr/assets/publications/lee:swarmbox.pdf){: .btn .btn-outline }
+[<span class="material-symbols-outlined">co_present</span> Slides](https://compsec.postech.ac.kr/assets/publications/lee:swarmbox-slides.pdf){: .btn .btn-outline }
 [<span class="material-symbols-outlined">archive</span> Archive](https://doi.org/10.5281/zenodo.19344308){: .btn .btn-outline }
 [<span class="material-symbols-outlined">slideshow</span> Videos](https://youtube.com/playlist?list=PLblIEJCjwr_9GblkuCmMhJYYMpxl0o2AT&si=M_tvInOar4bzts4j){: .btn .btn-outline }
+
 
 > Please be advised: SwarmBox is currently in its early stages of development, and there might be some rough edges.
 > We are actively working on improving the framework and will be updating the repository with more features, documentation, and examples in the near future.
