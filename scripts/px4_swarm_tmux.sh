@@ -46,7 +46,7 @@ for ((n=0; n<=drones; n++)); do
         north=$((-1 * east * ((-1)**n)))
     fi
 
-    command="ROS_DOMAIN_ID=$((10+n)) PX4_UXRCE_DDS_PORT=$((DDS_DEFAULT_PORT + 10 + n)) GZ_IP=$GZ_IP GZ_PARTITION=$GZ_PARTITION PX4_SYS_AUTOSTART=4101$hdls PX4_SIM_MODEL=gz_x500 PX4_GZ_MODEL_POSE=\"$north,$east,0,0,0,0\" $PX4_PATH -i $n"
+    command="ROS_DOMAIN_ID=$((10+n)) PX4_UXRCE_DDS_PORT=$((DDS_DEFAULT_PORT + 10 + n)) GZ_IP=$GZ_IP GZ_PARTITION=$GZ_PARTITION PX4_SYS_AUTOSTART=24001$hdls PX4_SIM_MODEL=gz_x500 PX4_GZ_MODEL_POSE=\"$north,$east,0,0,0,0\" $PX4_PATH -i $n"
     tmux send-keys -t $SESSION_NAME "$command" C-m
     tmux split-window -v
     tmux select-layout tiled
