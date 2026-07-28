@@ -41,19 +41,16 @@ source .venv/bin/activate
 
 echo "Installing Python dependencies..."
 pip install -r ./scripts/requirements.txt
-pip install -r ./PX4-Autopilot/Tools/setup/requirements.txt
 
-echo "Setting up PX4-Autopilot..."
-(cd PX4-Autopilot && bash Tools/setup/ubuntu.sh)
+# TODO: the setup of autopilot will become selective later.
+echo "Setting up PX4-Autopilot (clone + patches)..."
+bash autopilot/setup-px4.sh
 
 # IF needed, Install ROS 2 dependencies. mostly it's not needed.
 # source /opt/ros/humble/setup.bash
 # sudo rosdep init 2>/dev/null || true
 # rosdep update
 # rosdep install --from-paths swarmbox_ws/src -y --ignore-src
-
-echo "Building PX4-Autopilot..."
-(cd PX4-Autopilot && make px4_sitl)
 
 echo "Building ROS 2 workspace..."
 if [ -f "/opt/ros/jazzy/setup.bash" ]; then

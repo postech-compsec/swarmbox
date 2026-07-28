@@ -67,7 +67,7 @@ We provide a setup script to automate the installation of SwarmBox and its depen
 ./scripts/setup.sh
 ```
 
-Please note that PX4-Autopilot is a submodule of the SwarmBox repository, so you don't need to clone it separately. 
+This will also run `autopilot/setup-px4.sh`, which clones PX4-Autopilot (`release/1.17`) into `autopilot/PX4-Autopilot/` and applies the SwarmBox-specific patches from `autopilot/PX4-patches/`. PX4-Autopilot is intentionally not vendored as a submodule anymore, so you don't need to clone it separately.
 Once the installation is complete, you can try the following command to verify that everything is set up correctly:
 
 ```bash

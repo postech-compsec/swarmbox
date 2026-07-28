@@ -24,8 +24,8 @@ rm -rf swarmbox_ws/build/ swarmbox_ws/log/ swarmbox_ws/install/
 
 # 4. Clean PX4-Autopilot (make distclean)
 echo "[-] Running 'make distclean' on PX4-Autopilot..."
-if [ -d "PX4-Autopilot" ]; then
-    (cd PX4-Autopilot && make distclean)
+if [ -d "autopilot/PX4-Autopilot" ]; then
+    (cd autopilot/PX4-Autopilot && make distclean)
 else
     echo "    ⚠️ PX4-Autopilot directory not found! Skipping..."
 fi

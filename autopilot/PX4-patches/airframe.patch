@@ -1,0 +1,43 @@
+diff --git a/ROMFS/px4fmu_common/init.d-posix/airframes/24001_gz_x500_swarmbox b/ROMFS/px4fmu_common/init.d-posix/airframes/24001_gz_x500_swarmbox
+new file mode 100644
+index 0000000000..f992297f5a
+--- /dev/null
++++ b/ROMFS/px4fmu_common/init.d-posix/airframes/24001_gz_x500_swarmbox
+@@ -0,0 +1,26 @@
++#!/bin/sh
++
++. ${R}etc/init.d-posix/airframes/4001_gz_x500
++
++param set-default UXRCE_DDS_SYNCT 0
++param set-default UXRCE_DDS_SYNCC 1
++
++param set-default COM_OBL_RC_ACT 3
++
++# >>>>> Failsafe configurations modified for swarmbox.
++# NOTE: these parameter modifications are done for huge scale testings. You may want to change them for your preferred failsafe behaviors.
++# please refer to the original documents: https://docs.px4.io/main/en/config/safety
++param set-default SYS_FAILURE_EN 0
++param set-default COM_LOW_BAT_ACT 0
++param set-default SIM_BAT_ENABLE 0 # disable battery simulator by default
++
++param set-default COM_ARM_WO_GPS 1 # arm without GNSS config, without warning
++param set-default COM_ARM_BAT_MIN 0 # disable battery low warning
++
++param set-default COM_DISARM_PRFLT -1  # disable disarm preflight checks
++# param set-default COM_POS_FS_DELAY 1
++# param set-default COM_POS_FS_EPH   -1
++
++param set-default NAV_DLL_ACT 0 # disable data link (ground control) loss failsafe
++
++# <<<<<
+\ No newline at end of file
+diff --git a/ROMFS/px4fmu_common/init.d-posix/airframes/CMakeLists.txt b/ROMFS/px4fmu_common/init.d-posix/airframes/CMakeLists.txt
+index 4cf43413f6..89190ff455 100644
+--- a/ROMFS/px4fmu_common/init.d-posix/airframes/CMakeLists.txt
++++ b/ROMFS/px4fmu_common/init.d-posix/airframes/CMakeLists.txt
+@@ -120,4 +120,5 @@ px4_add_romfs_files(
+ 	70000_gz_atmos
+ 
+ 	# [22000, 22999] Reserve for custom models
++	24001_gz_x500_swarmbox
+ )

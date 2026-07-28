@@ -12,7 +12,8 @@ file_path = os.path.abspath(__file__)
 # project and px4 are at ../.. from this file
 repo_dir = os.path.dirname(os.path.dirname(os.path.dirname(file_path)))
 project_path = os.path.join(repo_dir, 'swarmbox_ws/')
-px4_path = os.path.join(repo_dir, 'PX4-Autopilot/')
+# TODO: in the future swarmbox will not be dependent to px4.
+px4_path = os.path.join(repo_dir, 'autopilot/PX4-Autopilot/')
 #######################################################
 
 ulg_files = []
