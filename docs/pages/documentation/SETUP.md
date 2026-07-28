@@ -1,8 +1,10 @@
 ---
 layout: default
 title: Getting Started
-nav_order: 2
-permalink: /setup/
+parent: Documentation
+nav_order: 1
+permalink: /docs/getting-started/
+has_toc: true
 ---
 
 # How to Setup SwarmBox

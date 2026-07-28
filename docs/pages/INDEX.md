@@ -41,7 +41,7 @@ By offering a plug-and-play architecture, a swarm-level integrated analyzer, and
 
 
 ## Deep Dive into SwarmBox
-For quick setup instructions, please refer to the [Getting Started]({% link pages/SETUP.md %}).  
+For quick setup instructions, please refer to the [Getting Started]({% link pages/documentation/SETUP.md %}).  
 For detailed documentation, including architecture overview and usage examples, will be available soon. Please stay tuned for updates!
 
 ## Cite this work
