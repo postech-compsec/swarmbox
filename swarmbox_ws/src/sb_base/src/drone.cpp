@@ -125,7 +125,7 @@ Drone::Drone(const rclcpp::NodeOptions & options) : SBNode("drone", options) {
             this->gps_updated = true;
         }
     });
-    px4_sub_local_pos_ = this->px4_node_->create_subscription<px4_msgs::msg::VehicleLocalPosition>(this->px4_ns+"/fmu/out/vehicle_local_position", qos, [this](const px4_msgs::msg::VehicleLocalPosition::SharedPtr msg){ 
+    px4_sub_local_pos_ = this->px4_node_->create_subscription<px4_msgs::msg::VehicleLocalPosition>(this->px4_ns+"/fmu/out/vehicle_local_position_v1", qos, [this](const px4_msgs::msg::VehicleLocalPosition::SharedPtr msg){ 
         std::lock_guard<std::mutex> lock(this->state_mutex_);
         this->px4_local_pos_ = *msg;
         this->world_pos = Eigen::Vector3d(
