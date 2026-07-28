@@ -85,7 +85,6 @@ are available on [10.5281/zenodo.19344308](https://doi.org/10.5281/zenodo.193443
 {: .note }
 
 - **In-Progress**
-    - Support for PX4 v1.17
     - Creating guide documentation for SwarmBox
 - **Planned**
     - Hardware setup guide and description for real-world drone swarm deployment
