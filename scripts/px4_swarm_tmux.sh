@@ -1,6 +1,6 @@
 #!/bin/bash
 # CONFIG: change px4 path if needed.
-PX4_PATH="PX4-Autopilot/build/px4_sitl_default/bin/px4"
+PX4_PATH="autopilot/PX4-Autopilot/build/px4_sitl_default/bin/px4"
 
 # usage: ./px4_swarm_tmux.sh <number_of_drones> <num_of_drones_on_one_row> <headless_flag>
 # automates px4 simulation multi drone runs

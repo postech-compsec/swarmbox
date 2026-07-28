@@ -65,5 +65,5 @@ SwarmBox is an open-source project licensed under the MIT License. See the [LICE
 Please feel free to use, modify, and distribute this software in accordance with the terms of the MIT License.
 
 This project contains the following open-source components:
-- **`PX4-Autopilot`**: BSD 3-Clause License (see [PX4-Autopilot/LICENSE](PX4-Autopilot/LICENSE))
+- **`PX4-Autopilot`**: BSD 3-Clause License (fetched by `autopilot/setup-px4.sh`; see [PX4-Autopilot LICENSE](https://github.com/PX4/PX4-Autopilot/blob/main/LICENSE))
 - **`px4_msgs`**: BSD 3-Clause License (see [swarmbox_ws/src/px4_msgs/LICENSE](swarmbox_ws/src/px4_msgs/LICENSE))

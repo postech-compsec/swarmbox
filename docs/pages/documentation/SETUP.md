@@ -1,8 +1,10 @@
 ---
 layout: default
 title: Getting Started
-nav_order: 2
-permalink: /setup/
+parent: Documentation
+nav_order: 1
+permalink: /docs/getting-started/
+has_toc: true
 ---
 
 # How to Setup SwarmBox
@@ -18,33 +20,11 @@ This document provides step-by-step instructions for setting up the SwarmBox fra
 
 ### 1. Install Dependencies
 #### A. ROS 2 Jazzy
-Please refer to the official ROS 2 Jazzy installation guide for Ubuntu 22.04: [ROS 2 Jazzy Installation](https://docs.ros.org/en/jazzy/Installation/Ubuntu-Install-Debs.html)
+Please refer to the official ROS 2 Jazzy installation guide for Ubuntu 24.04: [ROS 2 Jazzy Installation](https://docs.ros.org/en/jazzy/Installation/Ubuntu-Install-Debs.html)
 
 #### B. MicroXRCE-DDS
 Currently, SwarmBox only supports MicroXRCE-DDS as the underlying middleware for communication between swarm components.
-Please follow the instructions in the MicroXRCE-DDS documentation to install it on your system: [MicroXRCE-DDS Installation](https://docs.px4.io/v1.16/en/middleware/uxrce_dds)
-
-> A [known build failure](https://github.com/PX4/PX4-Autopilot/issues/24477#issuecomment-3252813682) occurs in the MicroXRCE-DDS Make procedure 
-> due to the deprecation of older FastDDS versions.
-> To fix this, please update the `_fastdds_version` and `_fastdds_tag` variables as follows:
-{: .warning }
-
-```diff
---- a/CMakeLists.txt
-+++ b/CMakeLists.txt
-@@ -95,8 +95,8 @@ if(UAGENT_FAST_PROFILE)
-     if(UAGENT_USE_SYSTEM_FASTDDS)
-         set(_fastdds_version 2)
-     else()
--        set(_fastdds_version 2.12)
--        set(_fastdds_tag 2.12.x)
-+        set(_fastdds_version 2.13)
-+        set(_fastdds_tag 2.13.x)
-         set(_foonathan_memory_tag v0.7-3) # This tag should be updated every time it gets updated in foonathan_memory_vendor eProsima's package
-     endif()
-     list(APPEND _deps "fastrtps\;${_fastdds_version}")
-```
-{: .warning }
+Please follow the instructions in the MicroXRCE-DDS documentation to install it on your system: [MicroXRCE-DDS Installation](https://docs.px4.io/v1.17/en/middleware/uxrce_dds)
 
 
 ### 2. Clone SwarmBox Repository
@@ -67,7 +47,10 @@ We provide a setup script to automate the installation of SwarmBox and its depen
 ./scripts/setup.sh
 ```
 
-Please note that PX4-Autopilot is a submodule of the SwarmBox repository, so you don't need to clone it separately. 
+This will also run `autopilot/setup-px4.sh`, which clones PX4-Autopilot (`release/1.17`) into `autopilot/PX4-Autopilot/` 
+and applies the SwarmBox-specific patches from `autopilot/PX4-patches/`. 
+
+PX4-Autopilot is intentionally not vendored as a submodule anymore; instead, it will be cloned during the setup process.
 Once the installation is complete, you can try the following command to verify that everything is set up correctly:
 
 ```bash

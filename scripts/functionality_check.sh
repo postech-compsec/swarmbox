@@ -16,7 +16,7 @@ echo "▶ [1/4] Activating Virtual Environment..."
 source .venv/bin/activate
 
 echo "▶ [2/4] Checking PX4-Autopilot Build..."
-cd PX4-Autopilot 
+cd autopilot/PX4-Autopilot
 make px4_sitl
 cd "$WORKSPACE_ROOT"
 

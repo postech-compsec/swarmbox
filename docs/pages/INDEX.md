@@ -41,7 +41,7 @@ By offering a plug-and-play architecture, a swarm-level integrated analyzer, and
 
 
 ## Deep Dive into SwarmBox
-For quick setup instructions, please refer to the [Getting Started]({% link pages/SETUP.md %}).  
+For quick setup instructions, please refer to the [Getting Started]({% link pages/documentation/SETUP.md %}).  
 For detailed documentation, including architecture overview and usage examples, will be available soon. Please stay tuned for updates!
 
 ## Cite this work
@@ -85,7 +85,6 @@ are available on [10.5281/zenodo.19344308](https://doi.org/10.5281/zenodo.193443
 {: .note }
 
 - **In-Progress**
-    - Support for PX4 v1.17
     - Creating guide documentation for SwarmBox
 - **Planned**
     - Hardware setup guide and description for real-world drone swarm deployment
