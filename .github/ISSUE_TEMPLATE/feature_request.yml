@@ -1,0 +1,57 @@
+name: 🚀 Feature Request
+description: Suggest a new feature or enhancement for Swarmbox.
+title: "[Feature] "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for suggesting an improvement! Please describe the feature and its motivation.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem / Motivation
+      description: What problem does this feature solve? Is your request related to a limitation you're facing?
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed Solution
+      description: Describe the feature or change you'd like to see.
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives Considered
+      description: Any alternative solutions or workarounds you've considered.
+    validations:
+      required: false
+
+  - type: dropdown
+    id: component
+    attributes:
+      label: Related Component
+      multiple: true
+      options:
+        - PX4-Autopilot / autopilot setup
+        - swarmbox_ws (ROS 2 workspace)
+        - Simulation (Gazebo/SITL)
+        - Networking / Swarm communication
+        - Scripts (setup, cleanup, tmux)
+        - Documentation
+        - Other
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Context
+      description: Any references, mockups, or related issues/PRs.
+    validations:
+      required: false

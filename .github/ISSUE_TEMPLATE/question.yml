@@ -1,0 +1,25 @@
+name: ❓ Question
+description: Ask a question about usage, setup, or the project in general.
+title: "[Question] "
+labels: ["question"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Have a question about using or setting up Swarmbox? Please check the [README](../../README.md) and existing issues first.
+
+  - type: textarea
+    id: question
+    attributes:
+      label: Question
+      description: What would you like to know?
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Context
+      description: What are you trying to do? Include relevant setup details (OS, ROS 2 distro, PX4 version, hardware/SITL, etc.) if applicable.
+    validations:
+      required: false
