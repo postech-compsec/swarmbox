@@ -1,4 +1,4 @@
-# ros2 launch sb_base individual_drone.py drone_id:=0 config_file:=./run/evaluation/RQ2/config.yaml
+# ros2 launch sb_base individual_drone.py drone_id:=0 config_file:=./run/example/sim2real.yaml
 import os
 from launch import LaunchDescription, LaunchContext
 from launch_ros.actions import Node

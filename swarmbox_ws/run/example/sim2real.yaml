@@ -1,0 +1,21 @@
+# Example configuration for the sim2real formation mission (4 drones).
+# Used by scripts/functionality_check.sh and by the RQ2 evaluation.
+drone_config:
+  initial_positions:
+    0: [  0.0,   0.0]
+    1: [ -3.0,  -3.0]
+    2: [ -3.0,   3.0]
+    3: [ -6.0,  -6.0]
+
+  superiors:
+    0: -1
+    1: -1
+    2: -1
+    3: -1
+
+mission_config:
+  type: "sim2real"
+  swarm_size: 4
+  values:
+    0: [  0,   0]
+    # 1: [300, 300]

@@ -26,7 +26,7 @@ colcon build
 
 echo "▶ [4/4] Launching Formation Flight Simulation..."
 source install/setup.bash 
-python3 ./run/execute.py --config ./run/RQ2/config/rq2_sim2real.yaml
+python3 ./run/execute.py --config ./run/example/sim2real.yaml
 
 echo "=================================================="
 echo " Functionality Check Completed!"

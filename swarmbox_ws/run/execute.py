@@ -160,8 +160,8 @@ def main():
                     )
                 )
 
-        # read CONFIG_FILE has 'formation', 
-        if ('formation' in CONFIG_FILE) or ('formation' in os.path.basename(CONFIG_FILE)) or ('rq2' in CONFIG_FILE) or ('rq2' in os.path.basename(CONFIG_FILE)):
+        # these missions spawn in a single row instead of a grid
+        if package_name in ('formation', 'sim2real'):
             DRONES_PER_ROW = "-1"
 
         if not run_command(["bash", PX4_SCRIPT, str(nod), str(DRONES_PER_ROW), HEADLESS]):
