@@ -18,8 +18,15 @@ while not WORKSPACE.endswith('swarmbox_ws'):
 WORKSPACE = os.path.dirname(WORKSPACE)
 print(f"SwarmBox directory: {WORKSPACE}")
 
-PX4_SCRIPT = os.path.join(WORKSPACE, "scripts/px4_swarm_tmux.sh")
-SETUP_SCRIPT = os.path.join(WORKSPACE, "swarmbox_ws/install/local_setup.bash") 
+EXECUTABLE = sys.executable
+
+PX4_SCRIPT = os.environ.get("PX4_SCRIPT", os.path.join(WORKSPACE, "scripts/px4_swarm_tmux.sh"))
+PX4_SCRIPT = os.path.abspath(PX4_SCRIPT)
+SETUP_SCRIPT = os.environ.get("SETUP_SCRIPT", os.path.join(WORKSPACE, "swarmbox_ws/install/local_setup.bash"))
+SETUP_SCRIPT = os.path.abspath(SETUP_SCRIPT)
+PLOTTER_SCRIPT = os.environ.get("PLOTTER_SCRIPT", os.path.join(WORKSPACE, "swarmbox_ws/analysis/plotter.py"))
+PLOTTER_SCRIPT = os.path.abspath(PLOTTER_SCRIPT)
+
 AGENT_CMD = ["MicroXRCEAgent", "udp4", "-p"]
 DDS_DEFAULT_PORT = 8888
 
@@ -139,6 +146,7 @@ def main():
         print(f"{'='*60}")
 
         print("  - Starting MicroXRCE-DDS Networks...")
+        # default port is used for Ground Control.
         agent_process.append(
             subprocess.Popen(
                 AGENT_CMD + [str(DDS_DEFAULT_PORT)], 
@@ -197,11 +205,9 @@ def main():
         graceful_shutdown(all_processes)
     
     print("\n--- Starting Post-Processing ---")
-    plotter_env = os.path.join(WORKSPACE, ".venv/bin/python3")
-    plotter_script = os.path.join(WORKSPACE, "swarmbox_ws/analysis/plotter.py")
     
     print("  - run: plotter.py")
-    subprocess.run([plotter_env, plotter_script, '--config', CONFIG_FILE], cwd=os.path.join(WORKSPACE, "swarmbox_ws"))
+    subprocess.run([EXECUTABLE, PLOTTER_SCRIPT, '--config', CONFIG_FILE], cwd=os.path.join(WORKSPACE, "swarmbox_ws"))
 
     total_script_duration = time.time() - script_start_time
     print(f"\n{'='*60}")
