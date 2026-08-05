@@ -314,7 +314,7 @@ std::vector<int16_t> Drone::assign_successors() {
     successor_list.reserve(1 + this->emergency_contacts.size());
     successor_list.push_back(static_cast<int16_t>(this->sup_id));
     successor_list.insert(successor_list.end(), this->emergency_contacts.begin(), this->emergency_contacts.end());
-    // RCLCPP_WARN_ONCE(this->get_logger(), "There's no successor rule implemented: %d has been assigned. Make sure you implement your overriding [std::vector<int> assign_successors()] function", this->sup_id);
+    RCLCPP_WARN_ONCE(this->get_logger(), "There's no successor rule implemented. Using default successor chain.");
     return successor_list;
 }
 
