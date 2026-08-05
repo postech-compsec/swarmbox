@@ -59,6 +59,7 @@ Drone::Drone(const rclcpp::NodeOptions & options) : SBNode("drone", options) {
     this->stage = STAGE_ICEB;
     this->complete = false;
     this->sup_lost_count = 0;
+    this->success_no = -1;
     this->z_bias = 0.0;
     
     // Initialize inferior list
@@ -301,14 +302,18 @@ bool Drone::update_superior() {
         // change sub/pubs
         this->box_sub_heartbeat_ = this->create_subscription<sb_base::msg::Heartbeat>(this->sup_ns+"/heartbeat", 10, std::bind(&Drone::sup_hb_callback, this, std::placeholders::_1));
         this->box_pub_report_ = this->create_publisher<sb_base::msg::Report>(this->sup_ns+"/report", 10);
+        this->sup_lost_count = 0; // give the new candidate a fresh threshold window, same as the original superior
         return true;
     }
 }
 
 // Tells how to assign successors.
 std::vector<int16_t> Drone::assign_successors() { 
-    // default behavior is to assign my superior as my only successor.
-    std::vector<int16_t> successor_list = {static_cast<int16_t>(this->sup_id)};
+    // default behavior is to publish my own escalation chain (my superior, followed by my own emergency_contacts) so each heartbeat propagates the full ancestor chain one level further down the tree.
+    std::vector<int16_t> successor_list;
+    successor_list.reserve(1 + this->emergency_contacts.size());
+    successor_list.push_back(static_cast<int16_t>(this->sup_id));
+    successor_list.insert(successor_list.end(), this->emergency_contacts.begin(), this->emergency_contacts.end());
     // RCLCPP_WARN_ONCE(this->get_logger(), "There's no successor rule implemented: %d has been assigned. Make sure you implement your overriding [std::vector<int> assign_successors()] function", this->sup_id);
     return successor_list;
 }
