@@ -1,6 +1,8 @@
 #include "sb_base/drone.hpp"
 #include <iostream>
 #include <algorithm>
+#include <limits>
+#include <stdexcept>
 
 using namespace std::chrono_literals;
 using namespace sb_base::msg;
@@ -12,6 +14,17 @@ using namespace sb_base::msg;
 
 static float default_loc[3] = {0.0f, 0.0f, 0.0f};
 
+// IDs are transmitted over the wire as int16_t (successors/emergency_contacts), so any
+// parameter outside that range must not be allowed to silently wrap on cast.
+static int validate_id16(const rclcpp::Logger & logger, const char * param_name, int value) {
+    if (value < -1 || value > std::numeric_limits<int16_t>::max()) {
+        RCLCPP_FATAL(logger, "Parameter '%s' = %d is out of allowed range [-1, %d]. Refusing to start.",
+                     param_name, value, std::numeric_limits<int16_t>::max());
+        throw std::out_of_range(std::string(param_name) + " out of int16_t range");
+    }
+    return value;
+}
+
 Drone::Drone(const rclcpp::NodeOptions & options) : SBNode("drone", options) {
     this->declare_parameter<int>("id", 0);
     this->declare_parameter<int>("superior", -1);
@@ -19,6 +32,8 @@ Drone::Drone(const rclcpp::NodeOptions & options) : SBNode("drone", options) {
     
     this->get_parameter("id", this->identity);
     this->get_parameter("superior", this->sup_id);
+    this->identity = validate_id16(this->get_logger(), "id", this->identity);
+    this->sup_id = validate_id16(this->get_logger(), "superior", this->sup_id);
     std::vector<double> loc = {0.0, 0.0, 0.0};
     this->get_parameter("relative_pos", loc);
     this->init_pos.x() = loc[0];
