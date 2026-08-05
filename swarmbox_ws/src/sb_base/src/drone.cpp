@@ -1,6 +1,8 @@
 #include "sb_base/drone.hpp"
 #include <iostream>
 #include <algorithm>
+#include <limits>
+#include <stdexcept>
 
 using namespace std::chrono_literals;
 using namespace sb_base::msg;
@@ -12,6 +14,17 @@ using namespace sb_base::msg;
 
 static float default_loc[3] = {0.0f, 0.0f, 0.0f};
 
+// IDs are transmitted over the wire as int16_t (successors/emergency_contacts), so any
+// parameter outside that range must not be allowed to silently wrap on cast.
+static int validate_id16(const rclcpp::Logger & logger, const char * param_name, int value) {
+    if (value < -1 || value > std::numeric_limits<int16_t>::max()) {
+        RCLCPP_FATAL(logger, "Parameter '%s' = %d is out of allowed range [-1, %d]. Refusing to start.",
+                     param_name, value, std::numeric_limits<int16_t>::max());
+        throw std::out_of_range(std::string(param_name) + " out of int16_t range");
+    }
+    return value;
+}
+
 Drone::Drone(const rclcpp::NodeOptions & options) : SBNode("drone", options) {
     this->declare_parameter<int>("id", 0);
     this->declare_parameter<int>("superior", -1);
@@ -19,6 +32,8 @@ Drone::Drone(const rclcpp::NodeOptions & options) : SBNode("drone", options) {
     
     this->get_parameter("id", this->identity);
     this->get_parameter("superior", this->sup_id);
+    this->identity = validate_id16(this->get_logger(), "id", this->identity);
+    this->sup_id = validate_id16(this->get_logger(), "superior", this->sup_id);
     std::vector<double> loc = {0.0, 0.0, 0.0};
     this->get_parameter("relative_pos", loc);
     this->init_pos.x() = loc[0];
@@ -59,6 +74,7 @@ Drone::Drone(const rclcpp::NodeOptions & options) : SBNode("drone", options) {
     this->stage = STAGE_ICEB;
     this->complete = false;
     this->sup_lost_count = 0;
+    this->success_no = -1;
     this->z_bias = 0.0;
     
     // Initialize inferior list
@@ -301,15 +317,19 @@ bool Drone::update_superior() {
         // change sub/pubs
         this->box_sub_heartbeat_ = this->create_subscription<sb_base::msg::Heartbeat>(this->sup_ns+"/heartbeat", 10, std::bind(&Drone::sup_hb_callback, this, std::placeholders::_1));
         this->box_pub_report_ = this->create_publisher<sb_base::msg::Report>(this->sup_ns+"/report", 10);
+        this->sup_lost_count = 0; // give the new candidate a fresh threshold window, same as the original superior
         return true;
     }
 }
 
 // Tells how to assign successors.
 std::vector<int16_t> Drone::assign_successors() { 
-    // default behavior is to assign my superior as my only successor.
-    std::vector<int16_t> successor_list = {static_cast<int16_t>(this->sup_id)};
-    // RCLCPP_WARN_ONCE(this->get_logger(), "There's no successor rule implemented: %d has been assigned. Make sure you implement your overriding [std::vector<int> assign_successors()] function", this->sup_id);
+    // default behavior is to publish my own escalation chain (my superior, followed by my own emergency_contacts) so each heartbeat propagates the full ancestor chain one level further down the tree.
+    std::vector<int16_t> successor_list;
+    successor_list.reserve(1 + this->emergency_contacts.size());
+    successor_list.push_back(static_cast<int16_t>(this->sup_id));
+    successor_list.insert(successor_list.end(), this->emergency_contacts.begin(), this->emergency_contacts.end());
+    RCLCPP_WARN_ONCE(this->get_logger(), "There's no successor rule implemented. Using default successor chain.");
     return successor_list;
 }
 
