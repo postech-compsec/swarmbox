@@ -192,8 +192,14 @@ void Ground::parse_config_file(const std::string& config_path) {
             for (const auto& value : mission_values) {
                 int id = value.first.as<int>();
                 std::vector<double> vals = value.second.as<std::vector<double>>();
+                if (vals.size() < 2) {
+                    RCLCPP_ERROR(this->get_logger(),
+                                 "mission_config.values[%d] has %zu element(s); at least 2 are required. Skipping.",
+                                 id, vals.size());
+                    continue;
+                }
                 this->values_[id] = vals;
-                RCLCPP_DEBUG(this->get_logger(), "values %d: (%.2f, %.2f)", 
+                RCLCPP_DEBUG(this->get_logger(), "values %d: (%.2f, %.2f)",
                             id, vals[0], vals[1]);
             }
         }
