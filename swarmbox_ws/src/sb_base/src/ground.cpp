@@ -193,8 +193,8 @@ void Ground::parse_config_file(const std::string& config_path) {
                 int id = value.first.as<int>();
                 std::vector<double> vals = value.second.as<std::vector<double>>();
                 this->values_[id] = vals;
-                RCLCPP_DEBUG(this->get_logger(), "values %d: (%.2f, %.2f)", 
-                            id, vals[0], vals[1]);
+                RCLCPP_DEBUG(this->get_logger(), "values %d: %s",
+                            id, YAML::Dump(value.second).c_str());
             }
         }
 
