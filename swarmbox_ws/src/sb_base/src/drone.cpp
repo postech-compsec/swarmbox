@@ -420,7 +420,7 @@ void Drone::timer_callback() {
             this->total_alive += this->inf_reports[i].total_alive;
             this->total_count += this->inf_reports[i].total_count;
         }
-        if (this->inf_completes[i]) {
+        if (this->inf_completes[i] && this->inf_stage[i] == this->stage) {
             inf_complete_count++;
         }
         if (this->inf_lost_timer[i] > LOST_THRESH && this->inf_stage[i] != STAGE_ABRT) {
