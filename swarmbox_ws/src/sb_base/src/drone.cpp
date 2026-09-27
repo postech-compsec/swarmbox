@@ -415,19 +415,19 @@ void Drone::timer_callback() {
     this->total_count = 0;
     this->total_alive = 0;
     for (int i : this->inf_list) {
-        if (this->inf_stage[i] != STAGE_ABRT) {
-            inf_alive++;
-            this->total_alive += this->inf_reports[i].total_alive;
-            this->total_count += this->inf_reports[i].total_count;
-        }
-        if (this->inf_completes[i] && this->inf_stage[i] == this->stage) {
-            inf_complete_count++;
-        }
-        if (this->inf_lost_timer[i] > LOST_THRESH && this->inf_stage[i] != STAGE_ABRT) {
+        if (this->inf_stage[i] == STAGE_ABRT) continue; // Dead children are excluded from all counters.
+        if (this->inf_lost_timer[i] > LOST_THRESH) {
             RCLCPP_WARN(this->get_logger(), "Inferior %d connection lost.", i);
             this->inf_stage[i] = STAGE_ABRT;
-        } else {
-            this->inf_lost_timer[i]++;
+            this->inf_completes[i] = false;
+            continue;
+        }
+        this->inf_lost_timer[i]++;
+        inf_alive++;
+        this->total_alive += this->inf_reports[i].total_alive;
+        this->total_count += this->inf_reports[i].total_count;
+        if (this->inf_completes[i] && this->inf_stage[i] == this->stage) {
+            inf_complete_count++;
         }
     }
     
