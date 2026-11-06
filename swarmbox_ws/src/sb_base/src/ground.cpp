@@ -423,28 +423,22 @@ void Ground::timer_callback() {
     int total_alive = 0;
     int total_count = 0;
     for (int i : this->inf_list) {
-        if (this->inf_stage[i] != STAGE_ABRT) {
-            inf_alive++;
-        }
-        if (this->inf_completes[i] && this->inf_stage[i] == this->stage) {
-            // difference with drone: check if the inferior's stage completion report matches the current stage
-            inf_complete_count++;
-        }
-        if (this->inf_lost_timer[i] > LOST_THRESH && this->inf_stage[i] != STAGE_ABRT) {
+        if (this->inf_stage[i] == STAGE_ABRT) continue; // Dead children are excluded from all counters.
+
+        if (this->inf_lost_timer[i] > LOST_THRESH) {
             RCLCPP_WARN(this->get_logger(), "Inferior %d connection lost.", i);
             this->inf_stage[i] = STAGE_ABRT;
-
-        } else {
-            this->inf_lost_timer[i]++;
+            this->inf_completes[i] = false;
+            continue;
         }
-        // Count total connections
-        if (this->inf_stage[i] != STAGE_ABRT) {
-            // add inferior's alive count to total alive count
-            total_alive += this->inf_reports[i].total_alive;
-            // add inferior's total count to total count
-            total_count += this->inf_reports[i].total_count;
 
-            // RCLCPP_DEBUG(this->get_logger(), "Inferior %d: alive %d, total %d", i, this->inf_reports[i].alive, this->inf_reports[i].total_count);
+        this->inf_lost_timer[i]++;
+        inf_alive++;
+        total_alive += this->inf_reports[i].total_alive;
+        total_count += this->inf_reports[i].total_count;
+
+        if (this->inf_completes[i] && this->inf_stage[i] == this->stage) {
+            inf_complete_count++;
         }
     }
 
@@ -465,10 +459,11 @@ void Ground::timer_callback() {
     this->conn_alive = total_alive;
 
     // check if complete
-    if (this->inf_complete_count == this->inf_count && this->inf_count > 0) {
+    if (this->inf_complete_count == this->inf_alive && this->inf_alive > 0) {
         // this->complete = true;
         // state change happens here.
         if (this->stage == STAGE_ICEB){
+            // Wait for the configured swarm size: Ground does not know which drones have yet to handshake.
             if (total_count == this->total_swarm_size) {
                 RCLCPP_INFO(this->get_logger(), "All drones are connected. Proceeding to PREPARATION stage.");
                 this->stage = STAGE_PREP;

@@ -544,9 +544,9 @@ void Drone::timer_callback() {
         rclcpp::shutdown();
     }
     
-    if (this->complete && inf_complete_count == this->inf_count && this->inf_count > 0) {
+    if (this->complete && inf_complete_count == this->inf_alive && this->inf_alive > 0) {
         // this->complete = true;
-        RCLCPP_INFO_ONCE(this->get_logger(), "Stage %d completed for me and my %d inferiors", this->stage, this->inf_count);
+        RCLCPP_INFO_ONCE(this->get_logger(), "Stage %d completed for me and my %d inferiors", this->stage, this->inf_alive);
     }
 }
 
