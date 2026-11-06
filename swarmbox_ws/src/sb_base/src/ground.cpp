@@ -474,7 +474,7 @@ void Ground::timer_callback() {
             this->stage = STAGE_EXEC;
             this->stage_changes();
         } else if (this->stage > STAGE_PREP) {
-            RCLCPP_INFO(this->get_logger(), "Stage %d completed for the whole swarm!: %d, %d", this->stage, this->inf_complete_count, this->inf_count);
+            RCLCPP_INFO(this->get_logger(), "Stage %d completed for all agents alive!: %d, %d", this->stage, this->inf_complete_count, this->inf_alive);
             this->stage += 1; // Move to next stage
             this->stage_changes();
         }
