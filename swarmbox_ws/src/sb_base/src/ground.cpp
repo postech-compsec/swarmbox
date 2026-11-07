@@ -112,6 +112,11 @@ Ground::Ground(const rclcpp::NodeOptions& options) : SBNode("ground", options) {
         // RCLCPP_INFO(this->get_logger(), "Report delay from [%d]: %.03f ms", msg->orig_id, delay / 1000);
 
         auto it = inf_reports.find(msg->orig_id);
+        if (msg->stage == STAGE_ABRT &&
+            (it == this->inf_reports.end() ||
+             this->inf_stage.at(msg->orig_id) != STAGE_ABRT)) {
+            this->start_recovery_grace();
+        }
         Eigen::Vector3d pos = {msg->pos_x, msg->pos_y, msg->pos_z};
         if (it == inf_reports.end()) {
             RCLCPP_INFO(this->get_logger(), "[inferior %d] New handshake received", msg->orig_id);
