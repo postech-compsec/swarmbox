@@ -420,6 +420,7 @@ void Drone::timer_callback() {
             RCLCPP_WARN(this->get_logger(), "Inferior %d connection lost.", i);
             this->inf_stage[i] = STAGE_ABRT;
             this->inf_completes[i] = false;
+            this->start_recovery_grace();
             continue;
         }
         this->inf_lost_timer[i]++;
@@ -609,7 +610,10 @@ void Drone::box_stage_changes() {
 void Drone::box_report_publisher() {
     this->box_report_.orig_id = this->identity;
     this->box_report_.stage = this->stage;
-    this->box_report_.complete = (this->inf_complete_count == this->inf_alive && this->complete);
+    this->box_report_.complete = (this->inf_complete_count == this->inf_alive 
+                                && this->complete
+                                && !this->recovery_pending()
+                                );
     this->box_report_.total_count = this->total_count + 1;
     this->box_report_.total_alive = this->total_alive + ((this->stage == STAGE_ABRT) ? 0 : 1);
     // marker("Publishing box report: total [%d / %d]", this->box_report_.total_count, this->box_report_.total_alive);

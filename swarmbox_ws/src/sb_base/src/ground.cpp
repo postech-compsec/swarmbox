@@ -429,6 +429,7 @@ void Ground::timer_callback() {
             RCLCPP_WARN(this->get_logger(), "Inferior %d connection lost.", i);
             this->inf_stage[i] = STAGE_ABRT;
             this->inf_completes[i] = false;
+            this->start_recovery_grace();
             continue;
         }
 
@@ -459,7 +460,10 @@ void Ground::timer_callback() {
     this->conn_alive = total_alive;
 
     // check if complete
-    if (this->inf_complete_count == this->inf_alive && this->inf_alive > 0) {
+    if (this->inf_complete_count == this->inf_alive 
+        && this->inf_alive > 0
+        && !this->recovery_pending()
+    ) {
         // this->complete = true;
         // state change happens here.
         if (this->stage == STAGE_ICEB){
