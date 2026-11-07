@@ -1,5 +1,6 @@
 #pragma once
 
+#include <chrono>
 #include <string>
 #include <rclcpp/rclcpp.hpp>
 #include <type_traits>
@@ -72,4 +73,18 @@ protected:
         marker_once(-1, std::forward<T>(format_str), std::forward<Args>(args)...);
     }
     // void marker(int marker_id, const char* format_str, Args... args);
+
+    using Clock = std::chrono::steady_clock;
+    static constexpr auto RECOVERY_GRACE =
+        std::chrono::milliseconds{25} * (2 * LOST_THRESH);
+
+    Clock::time_point recovery_deadline_ = Clock::time_point::min();
+
+    void start_recovery_grace() {
+        recovery_deadline_ = Clock::now() + RECOVERY_GRACE;
+    }
+
+    bool recovery_pending() const {
+        return Clock::now() < recovery_deadline_;
+    }
 };

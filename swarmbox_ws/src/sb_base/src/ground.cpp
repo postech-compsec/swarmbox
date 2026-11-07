@@ -112,6 +112,11 @@ Ground::Ground(const rclcpp::NodeOptions& options) : SBNode("ground", options) {
         // RCLCPP_INFO(this->get_logger(), "Report delay from [%d]: %.03f ms", msg->orig_id, delay / 1000);
 
         auto it = inf_reports.find(msg->orig_id);
+        if (msg->stage == STAGE_ABRT &&
+            (it == this->inf_reports.end() ||
+             this->inf_stage.at(msg->orig_id) != STAGE_ABRT)) {
+            this->start_recovery_grace();
+        }
         Eigen::Vector3d pos = {msg->pos_x, msg->pos_y, msg->pos_z};
         if (it == inf_reports.end()) {
             RCLCPP_INFO(this->get_logger(), "[inferior %d] New handshake received", msg->orig_id);
@@ -423,28 +428,23 @@ void Ground::timer_callback() {
     int total_alive = 0;
     int total_count = 0;
     for (int i : this->inf_list) {
-        if (this->inf_stage[i] != STAGE_ABRT) {
-            inf_alive++;
-        }
-        if (this->inf_completes[i] && this->inf_stage[i] == this->stage) {
-            // difference with drone: check if the inferior's stage completion report matches the current stage
-            inf_complete_count++;
-        }
-        if (this->inf_lost_timer[i] > LOST_THRESH && this->inf_stage[i] != STAGE_ABRT) {
+        if (this->inf_stage[i] == STAGE_ABRT) continue; // Dead children are excluded from all counters.
+
+        if (this->inf_lost_timer[i] > LOST_THRESH) {
             RCLCPP_WARN(this->get_logger(), "Inferior %d connection lost.", i);
             this->inf_stage[i] = STAGE_ABRT;
-
-        } else {
-            this->inf_lost_timer[i]++;
+            this->inf_completes[i] = false;
+            this->start_recovery_grace();
+            continue;
         }
-        // Count total connections
-        if (this->inf_stage[i] != STAGE_ABRT) {
-            // add inferior's alive count to total alive count
-            total_alive += this->inf_reports[i].total_alive;
-            // add inferior's total count to total count
-            total_count += this->inf_reports[i].total_count;
 
-            // RCLCPP_DEBUG(this->get_logger(), "Inferior %d: alive %d, total %d", i, this->inf_reports[i].alive, this->inf_reports[i].total_count);
+        this->inf_lost_timer[i]++;
+        inf_alive++;
+        total_alive += this->inf_reports[i].total_alive;
+        total_count += this->inf_reports[i].total_count;
+
+        if (this->inf_completes[i] && this->inf_stage[i] == this->stage) {
+            inf_complete_count++;
         }
     }
 
@@ -465,10 +465,14 @@ void Ground::timer_callback() {
     this->conn_alive = total_alive;
 
     // check if complete
-    if (this->inf_complete_count == this->inf_count && this->inf_count > 0) {
+    if (this->inf_complete_count == this->inf_alive 
+        && this->inf_alive > 0
+        && !this->recovery_pending()
+    ) {
         // this->complete = true;
         // state change happens here.
         if (this->stage == STAGE_ICEB){
+            // Wait for the configured swarm size: Ground does not know which drones have yet to handshake.
             if (total_count == this->total_swarm_size) {
                 RCLCPP_INFO(this->get_logger(), "All drones are connected. Proceeding to PREPARATION stage.");
                 this->stage = STAGE_PREP;
@@ -479,7 +483,7 @@ void Ground::timer_callback() {
             this->stage = STAGE_EXEC;
             this->stage_changes();
         } else if (this->stage > STAGE_PREP) {
-            RCLCPP_INFO(this->get_logger(), "Stage %d completed for the whole swarm!: %d, %d", this->stage, this->inf_complete_count, this->inf_count);
+            RCLCPP_INFO(this->get_logger(), "Stage %d completed for all agents alive!: %d, %d", this->stage, this->inf_complete_count, this->inf_alive);
             this->stage += 1; // Move to next stage
             this->stage_changes();
         }

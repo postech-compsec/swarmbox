@@ -174,7 +174,6 @@ Drone::Drone(const rclcpp::NodeOptions & options) : SBNode("drone", options) {
         if (this->stage == STAGE_FINI && msg->landed) {
             RCLCPP_INFO_ONCE(this->get_logger(), "Landed successfully.");
             this->complete = true;
-            this->box_report_publisher();
             this->box_stage_changes();
         }
     });
@@ -205,6 +204,11 @@ Drone::Drone(const rclcpp::NodeOptions & options) : SBNode("drone", options) {
     box_sub_reports_ = this->create_subscription<sb_base::msg::Report>("report", qos, [this](const sb_base::msg::Report::SharedPtr msg){
         // auto it = std::find(inf_list.begin(), inf_list.end(), msg->orig_id);
         auto it = this->inf_reports.find(msg->orig_id);
+        if (msg->stage == STAGE_ABRT &&
+            (it == this->inf_reports.end() ||
+             this->inf_stage.at(msg->orig_id) != STAGE_ABRT)) {
+            this->start_recovery_grace();
+        }
         if (it == inf_reports.end()) {
             RCLCPP_INFO(this->get_logger(), "[inferior %d] New handshake received", msg->orig_id);
             this->inf_list.push_back(msg->orig_id);
@@ -415,19 +419,20 @@ void Drone::timer_callback() {
     this->total_count = 0;
     this->total_alive = 0;
     for (int i : this->inf_list) {
-        if (this->inf_stage[i] != STAGE_ABRT) {
-            inf_alive++;
-            this->total_alive += this->inf_reports[i].total_alive;
-            this->total_count += this->inf_reports[i].total_count;
-        }
-        if (this->inf_completes[i]) {
-            inf_complete_count++;
-        }
-        if (this->inf_lost_timer[i] > LOST_THRESH && this->inf_stage[i] != STAGE_ABRT) {
+        if (this->inf_stage[i] == STAGE_ABRT) continue; // Dead children are excluded from all counters.
+        if (this->inf_lost_timer[i] > LOST_THRESH) {
             RCLCPP_WARN(this->get_logger(), "Inferior %d connection lost.", i);
             this->inf_stage[i] = STAGE_ABRT;
-        } else {
-            this->inf_lost_timer[i]++;
+            this->inf_completes[i] = false;
+            this->start_recovery_grace();
+            continue;
+        }
+        this->inf_lost_timer[i]++;
+        inf_alive++;
+        this->total_alive += this->inf_reports[i].total_alive;
+        this->total_count += this->inf_reports[i].total_count;
+        if (this->inf_completes[i] && this->inf_stage[i] == this->stage) {
+            inf_complete_count++;
         }
     }
     
@@ -544,9 +549,12 @@ void Drone::timer_callback() {
         rclcpp::shutdown();
     }
     
-    if (this->complete && inf_complete_count == this->inf_count && this->inf_count > 0) {
+    if (this->complete &&
+        this->inf_complete_count == this->inf_alive &&
+        this->inf_alive > 0 &&
+        !this->recovery_pending()) {
         // this->complete = true;
-        RCLCPP_INFO_ONCE(this->get_logger(), "Stage %d completed for me and my %d inferiors", this->stage, this->inf_count);
+        RCLCPP_INFO_ONCE(this->get_logger(), "Stage %d completed for me and my %d inferiors", this->stage, this->inf_alive);
     }
 }
 
@@ -609,7 +617,10 @@ void Drone::box_stage_changes() {
 void Drone::box_report_publisher() {
     this->box_report_.orig_id = this->identity;
     this->box_report_.stage = this->stage;
-    this->box_report_.complete = (this->inf_complete_count == this->inf_alive && this->complete);
+    this->box_report_.complete = (this->inf_complete_count == this->inf_alive 
+                                && this->complete
+                                && !this->recovery_pending()
+                                );
     this->box_report_.total_count = this->total_count + 1;
     this->box_report_.total_alive = this->total_alive + ((this->stage == STAGE_ABRT) ? 0 : 1);
     // marker("Publishing box report: total [%d / %d]", this->box_report_.total_count, this->box_report_.total_alive);
